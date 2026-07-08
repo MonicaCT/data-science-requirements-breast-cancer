@@ -59,6 +59,21 @@ data-science-requirements-breast-cancer/
 - El heatmap de correlaciones evidencia redundancia entre variables geometricas, un aspecto clave para fases posteriores de seleccion de variables o regularizacion.
 - Se definieron 10 requerimientos funcionales y 10 no funcionales con prioridad, categoria, justificacion e impacto.
 
+## Informe PDF academico
+
+[Descargar informe PDF](report/final_report.pdf)
+
+![Vista previa del informe PDF](report/final_report_preview.png)
+
+El PDF incluye portada profesional, tabla de contenidos, indice de figuras, indice de tablas, numeracion de paginas, encabezado y pie de pagina, figuras y tablas numeradas, referencias cruzadas, conclusiones, bibliografia y anexos. Fue compuesto desde los artefactos finales existentes, sin recalcular estadisticas y sin regenerar graficos analiticos.
+
+Para regenerar solo el PDF desde los resultados ya existentes:
+
+```bash
+python src/build_pdf_report.py
+```
+
+Nota: la generacion del PDF requiere una instalacion local de XeLaTeX/TinyTeX disponible en el sistema. No requiere internet ni descarga datasets.
 ## Reporte HTML
 
 El informe final con estilo editorial esta disponible en:
@@ -112,3 +127,4 @@ Este proyecto cumple las restricciones academicas definidas:
 ## Licencia y uso academico
 
 Repositorio preparado para fines academicos y de demostracion metodologica. El analisis no debe interpretarse como herramienta clinica ni como recomendacion medica individual.
+

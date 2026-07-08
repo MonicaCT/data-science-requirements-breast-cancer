@@ -1,0 +1,717 @@
+
+\documentclass[11pt,a4paper]{article}
+\usepackage[a4paper,margin=2.4cm,headheight=15pt]{geometry}
+\usepackage{fontspec}
+\setmainfont{Segoe UI}
+\setsansfont{Segoe UI}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{float}
+\usepackage{lscape}
+\usepackage{hyperref}
+\graphicspath{{./}{figures/}{../figures/}}
+\definecolor{Ink}{HTML}{22272B}
+\definecolor{Muted}{HTML}{69737A}
+\definecolor{Accent}{HTML}{A64F4F}
+\definecolor{Rule}{HTML}{D9D6CE}
+\definecolor{Paper}{HTML}{FBFAF7}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=Accent,
+  urlcolor=Accent,
+  citecolor=Accent,
+  pdftitle={Selección, caracterización y requerimientos para un sistema analítico biomédico},
+  pdfauthor={Monica Cueto Tapia}
+}
+\renewcommand{\contentsname}{Tabla de contenidos}
+\renewcommand{\listfigurename}{Índice de figuras}
+\renewcommand{\listtablename}{Índice de tablas}
+\renewcommand{\figurename}{Figura}
+\renewcommand{\tablename}{Tabla}
+\renewcommand{\refname}{Bibliografía}
+\makeatletter
+\def\ps@academic{%
+  \def\@oddhead{\small Proyecto de Ciencia de Datos\hfil UPEA}%
+  \def\@evenhead{\small UPEA\hfil Proyecto de Ciencia de Datos}%
+  \def\@oddfoot{\hfil\thepage\hfil}%
+  \def\@evenfoot{\hfil\thepage\hfil}%
+}
+\makeatother
+\pagestyle{academic}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.72em}
+
+\begin{document}
+
+\begin{titlepage}
+\thispagestyle{empty}
+\pagecolor{Paper}
+\begin{center}
+\vspace*{1.2cm}
+{\Large \textcolor{Accent}{Informe científico reproducible}}\\[1.2cm]
+{\Huge \bfseries Selección, caracterización y requerimientos para un sistema analítico biomédico}\\[0.45cm]
+{\Large Breast Cancer Wisconsin Diagnostic Dataset}\\[1.6cm]
+\rule{0.78\textwidth}{0.6pt}\\[1.2cm]
+{\Large \bfseries Monica Cueto Tapia}\\[0.5cm]
+{\large Maestría en Inteligencia Artificial, Machine Learning y Data Science}\\[0.25cm]
+{\large Universidad Pública de El Alto (UPEA)}\\[1.2cm]
+{\large 7 de julio de 2026}\\[2.1cm]
+\begin{minipage}{0.78\textwidth}
+\small
+Documento académico preparado como evidencia de un proyecto reproducible de Ciencia de Datos. El informe conserva los análisis, tablas, gráficos e interpretaciones del reporte HTML original, reorganizados en formato de investigación con numeración, referencias cruzadas, índices y anexos.
+\end{minipage}
+\vfill
+{\small Sin APIs, sin nube, sin descargas de datasets y sin modelos externos de inteligencia artificial.}
+\end{center}
+\end{titlepage}
+\nopagecolor
+
+\pagenumbering{roman}
+\tableofcontents
+\clearpage
+\listoffigures
+\clearpage
+\listoftables
+\clearpage
+
+\pagenumbering{arabic}
+\section{Resumen ejecutivo}
+Se evaluaron tres datasets disponibles localmente en scikit-learn. El dataset \textbf{Breast Cancer Wisconsin Diagnostic} obtuvo el mayor puntaje ponderado (97.7355/100) al combinar tamaño muestral, riqueza dimensional, completitud, preparación analítica, interpretabilidad e impacto. La selección es apropiada para una práctica de maestría porque permite discutir calidad de datos, separación estadística entre clases, redundancia de variables y requerimientos de un flujo analítico reproducible sin depender de servicios externos.
+
+El conjunto seleccionado contiene 569 observaciones, 30 variables predictoras y 0\% de valores faltantes. La evidencia univariada más fuerte aparece en \textit{worst concave points} (|d|=2.6926), mientras que el análisis de correlación evidencia redundancia fuerte entre medidas geométricas. El tablero ejecutivo de la Figura~\ref{fig:dashboard} sintetiza estos hallazgos.
+
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\linewidth,height=0.62\textheight,keepaspectratio]{figures/12_executive_dashboard.png}
+\caption{Dashboard ejecutivo del dataset seleccionado}
+\label{fig:dashboard}
+\vspace{0.2em}
+\begin{minipage}{0.92\linewidth}
+\footnotesize \textbf{Interpretación.} El panel resume que el conjunto es completo, moderadamente desbalanceado y con variables de fuerte separación diagnóstica.
+\end{minipage}
+\end{figure}
+
+
+\section{Fase 1. Búsqueda, comparación y selección del dataset}
+Para cumplir la restricción de no usar internet, APIs ni servicios en la nube, la búsqueda se limitó al catálogo local de datasets incluidos en scikit-learn. Esta decisión reduce el consumo computacional, elimina riesgos de disponibilidad externa y mantiene la reproducibilidad. Los candidatos fueron Breast Cancer Wisconsin Diagnostic, Wine Recognition y Diabetes Progression.
+
+Como se muestra en la Figura~\ref{fig:project-flow}, el flujo separa selección, análisis y comunicación. La comparación cuantitativa se resume en las Tablas~\ref{tab:comparison-summary} y~\ref{tab:comparison-scores}; las Figuras~\ref{fig:comparison-matrix} y~\ref{fig:dataset-radar} complementan la decisión visualmente.
+
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\linewidth,height=0.62\textheight,keepaspectratio]{figures/01_project_flow.png}
+\caption{Flujo metodológico del proyecto}
+\label{fig:project-flow}
+\vspace{0.2em}
+\begin{minipage}{0.92\linewidth}
+\footnotesize \textbf{Interpretación.} El flujo separa selección, análisis y comunicación para que cada conclusión se origine en evidencia verificable.
+\end{minipage}
+\end{figure}
+
+
+
+\scriptsize
+\setlength{\tabcolsep}{1.5pt}
+\renewcommand{\arraystretch}{1.16}
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.167\linewidth} >{\raggedright\arraybackslash}p{0.176\linewidth} >{\raggedright\arraybackslash}p{0.130\linewidth} >{\raggedright\arraybackslash}p{0.093\linewidth} >{\raggedright\arraybackslash}p{0.102\linewidth} >{\raggedright\arraybackslash}p{0.111\linewidth} >{\raggedright\arraybackslash}p{0.121\linewidth}}
+\caption{Comparación técnica resumida de datasets candidatos}\label{tab:comparison-summary}\\
+\toprule
+Dataset & Dominio & Tarea & Obs. & Variables & Faltantes (\%) & Puntaje total \\
+\midrule
+\endfirsthead
+\caption[]{Comparación técnica resumida de datasets candidatos (continuación)}\\
+\toprule
+Dataset & Dominio & Tarea & Obs. & Variables & Faltantes (\%) & Puntaje total \\
+\midrule
+\endhead
+\midrule
+\multicolumn{7}{r}{Continúa en la siguiente página}\\
+\midrule
+\endfoot
+\bottomrule
+\endlastfoot
+Breast Cancer Wisconsin Diagnostic & Salud / diagnóstico oncológico & Clasificación binaria & 569.0 & 30.00 & 0 & 97.74 \\
+Diabetes Progression & Salud / progresión metabólica & Regresión & 442.0 & 10.00 & 0 & 83.53 \\
+Wine Recognition & Química analítica / enología & Clasificación multiclase & 178.0 & 13.00 & 0 & 76.18 \\
+\end{longtable}
+\normalsize
+
+
+\begin{landscape}
+
+\scriptsize
+\setlength{\tabcolsep}{1.5pt}
+\renewcommand{\arraystretch}{1.16}
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.154\linewidth} >{\raggedright\arraybackslash}p{0.094\linewidth} >{\raggedright\arraybackslash}p{0.111\linewidth} >{\raggedright\arraybackslash}p{0.103\linewidth} >{\raggedright\arraybackslash}p{0.128\linewidth} >{\raggedright\arraybackslash}p{0.111\linewidth} >{\raggedright\arraybackslash}p{0.077\linewidth} >{\raggedright\arraybackslash}p{0.103\linewidth}}
+\caption{Puntajes normalizados usados para la selección del dataset}\label{tab:comparison-scores}\\
+\toprule
+Dataset & Tamaño & Dimensión & Completitud & Prep. analítica & Interpretabilidad & Impacto & Puntaje total \\
+\midrule
+\endfirsthead
+\caption[]{Puntajes normalizados usados para la selección del dataset (continuación)}\\
+\toprule
+Dataset & Tamaño & Dimensión & Completitud & Prep. analítica & Interpretabilidad & Impacto & Puntaje total \\
+\midrule
+\endhead
+\midrule
+\multicolumn{8}{r}{Continúa en la siguiente página}\\
+\midrule
+\endfoot
+\bottomrule
+\endlastfoot
+Breast Cancer Wisconsin Diagnostic & 100.0 & 100.0 & 100.0 & 94.90 & 90.00 & 100.0 & 97.74 \\
+Diabetes Progression & 88.14 & 57.73 & 100.0 & 100.0 & 73.00 & 90.00 & 83.53 \\
+Wine Recognition & 55.93 & 65.83 & 100.0 & 96.18 & 86.00 & 67.00 & 76.18 \\
+\end{longtable}
+\normalsize
+
+\end{landscape}
+
+
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\linewidth,height=0.62\textheight,keepaspectratio]{figures/02_dataset_comparison_matrix.png}
+\caption{Matriz comparativa de datasets candidatos}
+\label{fig:comparison-matrix}
+\vspace{0.2em}
+\begin{minipage}{0.92\linewidth}
+\footnotesize \textbf{Interpretación.} El dataset de cáncer de mama domina por tamaño, profundidad de variables, impacto e interpretabilidad; la completitud es equivalente en los tres.
+\end{minipage}
+\end{figure}
+
+
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\linewidth,height=0.62\textheight,keepaspectratio]{figures/03_dataset_radar.png}
+\caption{Perfil multicriterio de selección}
+\label{fig:dataset-radar}
+\vspace{0.2em}
+\begin{minipage}{0.92\linewidth}
+\footnotesize \textbf{Interpretación.} La decisión no depende de un único criterio: el dataset seleccionado mantiene desempeño alto en seis dimensiones.
+\end{minipage}
+\end{figure}
+
+
+La ponderación priorizó evidencia verificable: 25\% tamaño muestral, 20\% dimensionalidad, 15\% completitud, 15\% preparación analítica, 15\% interpretabilidad y 10\% impacto. El dataset seleccionado domina por volumen, número de variables, completitud total y relevancia biomédica. Wine Recognition es técnicamente limpio, pero tiene menor escala e impacto para una discusión socio-técnica. Diabetes Progression posee impacto alto, aunque su objetivo continuo y variables estandarizadas reducen interpretabilidad variable por variable.
+
+\section{Fase 2. Contexto, problema, objetivo y alcance}
+\subsection{Contexto}
+El análisis biomédico basado en imágenes requiere transformar mediciones morfológicas en evidencia interpretable. Este dataset resume características geométricas y de textura de núcleos celulares obtenidas a partir de aspiración con aguja fina de masas mamarias.
+
+\subsection{Problema}
+Antes de plantear un sistema predictivo, es necesario demostrar que los datos son completos, comprensibles, estadísticamente informativos y gobernables. Sin esa base, cualquier modelo posterior podría amplificar redundancias, sesgos de clase o interpretaciones clínicas débiles.
+
+\subsection{Objetivo}
+Seleccionar y caracterizar un dataset biomédico reproducible, identificar sus variables críticas, evaluar calidad estadística y definir requerimientos de un sistema analítico que pueda sostener futuras fases de modelado con rigor académico.
+
+\subsection{Alcance}
+El alcance cubre selección de dataset, análisis exploratorio, diccionario de datos, visualizaciones editoriales y requerimientos. No incluye entrenamiento de modelos clínicos ni recomendaciones médicas individuales, porque las fases solicitadas no lo exigen y porque se prioriza eficiencia.
+
+\subsection{Beneficiarios}
+Los beneficiarios son estudiantes e investigadores de ciencia de datos, docentes evaluadores, equipos de analítica biomédica y responsables de gobernanza de datos que requieran una base reproducible para decisiones metodológicas.
+
+\subsection{Resultados esperados}
+Se espera una selección defendible, un inventario de variables accionable, evidencia de calidad de datos, detección de señales estadísticas relevantes, visualizaciones publicables y especificación clara de requerimientos para continuidad del proyecto.
+
+
+\small
+\setlength{\tabcolsep}{1.5pt}
+\renewcommand{\arraystretch}{1.16}
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.191\linewidth} >{\raggedright\arraybackslash}p{0.201\linewidth} >{\raggedright\arraybackslash}p{0.507\linewidth}}
+\caption{Resumen de calidad del dataset seleccionado}\label{tab:quality}\\
+\toprule
+Indicador & Resultado & Interpretación técnica \\
+\midrule
+\endfirsthead
+\caption[]{Resumen de calidad del dataset seleccionado (continuación)}\\
+\toprule
+Indicador & Resultado & Interpretación técnica \\
+\midrule
+\endhead
+\midrule
+\multicolumn{3}{r}{Continúa en la siguiente página}\\
+\midrule
+\endfoot
+\bottomrule
+\endlastfoot
+Observaciones & 569.0 & Tamaño suficiente para exploración estadística y especificación de requerimientos. \\
+Variables predictoras & 30.00 & Cobertura morfológica amplia: medias, errores estándar y peores valores. \\
+Variable objetivo & diagnosis & Etiqueta clínica binaria para comparar patrones entre masas benignas y malignas. \\
+Valores faltantes & 0 (0.00\%) & No se requiere imputación; se preserva trazabilidad. \\
+Filas duplicadas & 0 & No se detectan registros duplicados exactos en el conjunto final. \\
+Distribución objetivo & benign: 357; malignant: 212 & Existe desbalance moderado, no extremo. \\
+Proporción minoritaria & 37.3\% & La clase maligna conserva representación analítica suficiente. \\
+Variables con atípicos IQR & 29 de 30 & Los atípicos deben revisarse como extremos biológicos plausibles, no eliminarse por defecto. \\
+Mayor correlación absoluta & mean radius vs mean perimeter: 0.998 & Sugiere redundancia morfológica que debe controlarse en modelado posterior. \\
+Variables con |d| >= 1 & 16.00 & La separación univariada es fuerte en varias variables, en especial medidas de concavidad y tamaño. \\
+\end{longtable}
+\normalsize
+
+
+La Figura~\ref{fig:missingness} confirma completitud total; la Figura~\ref{fig:target-distribution} muestra un desbalance moderado, no extremo. La señal univariada se observa en la Figura~\ref{fig:effect-size} y se complementa con la Tabla~\ref{tab:effect-sizes}.
+
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\linewidth,height=0.62\textheight,keepaspectratio]{figures/04_missingness_map.png}
+\caption{Diagrama de completitud por familia de variable}
+\label{fig:missingness}
+\vspace{0.2em}
+\begin{minipage}{0.92\linewidth}
+\footnotesize \textbf{Interpretación.} La completitud uniforme del 100\% elimina la necesidad de imputación en esta fase y reduce incertidumbre por datos faltantes.
+\end{minipage}
+\end{figure}
+
+
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\linewidth,height=0.62\textheight,keepaspectratio]{figures/05_target_distribution.png}
+\caption{Distribución de la variable objetivo}
+\label{fig:target-distribution}
+\vspace{0.2em}
+\begin{minipage}{0.92\linewidth}
+\footnotesize \textbf{Interpretación.} La clase benigna es mayoritaria, pero la clase maligna representa más de un tercio del conjunto; el desbalance es manejable para análisis exploratorio.
+\end{minipage}
+\end{figure}
+
+
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\linewidth,height=0.62\textheight,keepaspectratio]{figures/06_effect_size_lollipop.png}
+\caption{Variables con mayor separación entre diagnósticos}
+\label{fig:effect-size}
+\vspace{0.2em}
+\begin{minipage}{0.92\linewidth}
+\footnotesize \textbf{Interpretación.} Las medidas de concavidad, puntos cóncavos y perímetro/área concentran la mayor diferencia estandarizada entre masas malignas y benignas.
+\end{minipage}
+\end{figure}
+
+
+\begin{landscape}
+
+\scriptsize
+\setlength{\tabcolsep}{1.5pt}
+\renewcommand{\arraystretch}{1.16}
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.200\linewidth} >{\raggedright\arraybackslash}p{0.130\linewidth} >{\raggedright\arraybackslash}p{0.130\linewidth} >{\raggedright\arraybackslash}p{0.160\linewidth} >{\raggedright\arraybackslash}p{0.090\linewidth} >{\raggedright\arraybackslash}p{0.170\linewidth}}
+\caption{Tamaños de efecto por variable entre diagnósticos}\label{tab:effect-sizes}\\
+\toprule
+Variable & Media maligno & Media benigno & Diferencia estandarizada (d) & |d| & Dirección \\
+\midrule
+\endfirsthead
+\caption[]{Tamaños de efecto por variable entre diagnósticos (continuación)}\\
+\toprule
+Variable & Media maligno & Media benigno & Diferencia estandarizada (d) & |d| & Dirección \\
+\midrule
+\endhead
+\midrule
+\multicolumn{6}{r}{Continúa en la siguiente página}\\
+\midrule
+\endfoot
+\bottomrule
+\endlastfoot
+worst concave points & 0.1822 & 0.0744 & 2.6926 & 2.6926 & Mayor en maligno \\
+worst perimeter & 141.4 & 87.01 & 2.5982 & 2.5982 & Mayor en maligno \\
+mean concave points & 0.088 & 0.0257 & 2.5452 & 2.5452 & Mayor en maligno \\
+worst radius & 21.13 & 13.38 & 2.5439 & 2.5439 & Mayor en maligno \\
+mean perimeter & 115.4 & 78.08 & 2.2895 & 2.2895 & Mayor en maligno \\
+worst area & 1,422.3 & 558.9 & 2.2302 & 2.2302 & Mayor en maligno \\
+mean radius & 17.46 & 12.15 & 2.2055 & 2.2055 & Mayor en maligno \\
+mean area & 978.4 & 462.8 & 2.0757 & 2.0757 & Mayor en maligno \\
+mean concavity & 0.1608 & 0.0461 & 2.0033 & 2.0033 & Mayor en maligno \\
+worst concavity & 0.4506 & 0.1662 & 1.8119 & 1.8119 & Mayor en maligno \\
+mean compactness & 0.1452 & 0.0801 & 1.5346 & 1.5346 & Mayor en maligno \\
+worst compactness & 0.3748 & 0.1827 & 1.5126 & 1.5126 & Mayor en maligno \\
+radius error & 0.6091 & 0.2841 & 1.4217 & 1.4217 & Mayor en maligno \\
+perimeter error & 4.3239 & 2.0003 & 1.3816 & 1.3816 & Mayor en maligno \\
+area error & 72.67 & 21.14 & 1.3534 & 1.3534 & Mayor en maligno \\
+worst texture & 29.32 & 23.52 & 1.0605 & 1.0605 & Mayor en maligno \\
+worst smoothness & 0.1448 & 0.125 & 0.9596 & 0.9596 & Mayor en maligno \\
+worst symmetry & 0.3235 & 0.2702 & 0.9453 & 0.9453 & Mayor en maligno \\
+mean texture & 21.60 & 17.91 & 0.9423 & 0.9423 & Mayor en maligno \\
+concave points error & 0.0151 & 0.0099 & 0.9228 & 0.9228 & Mayor en maligno \\
+mean smoothness & 0.1029 & 0.0925 & 0.793 & 0.793 & Mayor en maligno \\
+mean symmetry & 0.1929 & 0.1742 & 0.723 & 0.723 & Mayor en maligno \\
+worst fractal dimension & 0.0915 & 0.0794 & 0.7068 & 0.7068 & Mayor en maligno \\
+compactness error & 0.0323 & 0.0214 & 0.6327 & 0.6327 & Mayor en maligno \\
+concavity error & 0.0418 & 0.026 & 0.5416 & 0.5416 & Mayor en maligno \\
+fractal dimension error & 0.0041 & 0.0036 & 0.1615 & 0.1615 & Mayor en maligno \\
+smoothness error & 0.0068 & 0.0072 & -0.1387 & 0.1387 & Mayor en benigno \\
+mean fractal dimension & 0.0627 & 0.0629 & -0.0265 & 0.0265 & Mayor en benigno \\
+texture error & 1.2109 & 1.2204 & -0.0171 & 0.0171 & Mayor en benigno \\
+symmetry error & 0.0205 & 0.0206 & -0.0135 & 0.0135 & Mayor en benigno \\
+\end{longtable}
+\normalsize
+
+\end{landscape}
+
+
+La Figura~\ref{fig:correlation} evidencia que la señal predictiva convive con multicolinealidad potencial. Las Figuras~\ref{fig:distributions} y~\ref{fig:boxplots} muestran los desplazamientos de distribución y mediana entre clases para las variables prioritarias.
+
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\linewidth,height=0.62\textheight,keepaspectratio]{figures/07_correlation_heatmap.png}
+\caption{Heatmap de correlación entre variables de mayor señal}
+\label{fig:correlation}
+\vspace{0.2em}
+\begin{minipage}{0.92\linewidth}
+\footnotesize \textbf{Interpretación.} La señal predictiva convive con redundancia fuerte entre medidas geométricas; esto sugiere cautela con multicolinealidad en fases de modelado.
+\end{minipage}
+\end{figure}
+
+
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\linewidth,height=0.62\textheight,keepaspectratio]{figures/08_distribution_panel.png}
+\caption{Distribuciones comparadas de variables prioritarias}
+\label{fig:distributions}
+\vspace{0.2em}
+\begin{minipage}{0.92\linewidth}
+\footnotesize \textbf{Interpretación.} Las distribuciones muestran desplazamientos sistemáticos entre clases, especialmente en variables de borde y concavidad.
+\end{minipage}
+\end{figure}
+
+
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\linewidth,height=0.62\textheight,keepaspectratio]{figures/09_boxplot_panel.png}
+\caption{Boxplots robustos por diagnóstico}
+\label{fig:boxplots}
+\vspace{0.2em}
+\begin{minipage}{0.92\linewidth}
+\footnotesize \textbf{Interpretación.} La escala robusta permite comparar variables con unidades diferentes y evidencia medianas más altas en malignidad para variables clave.
+\end{minipage}
+\end{figure}
+
+
+\section{Fase 3. Requerimientos del sistema analítico}
+Los requerimientos se formulan para un sistema de análisis reproducible, no para un producto clínico operativo. La prioridad se asigna según riesgo metodológico, trazabilidad y valor para decisiones académicas posteriores. La arquitectura propuesta se observa en la Figura~\ref{fig:architecture} y el cronograma ejecutivo en la Figura~\ref{fig:timeline}.
+
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\linewidth,height=0.62\textheight,keepaspectratio]{figures/10_architecture_pipeline.png}
+\caption{Arquitectura reproducible del proyecto}
+\label{fig:architecture}
+\vspace{0.2em}
+\begin{minipage}{0.92\linewidth}
+\footnotesize \textbf{Interpretación.} La arquitectura mantiene una sola ruta de datos y separa artefactos finales por función, evitando duplicación y procesamiento innecesario.
+\end{minipage}
+\end{figure}
+
+
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\linewidth,height=0.62\textheight,keepaspectratio]{figures/11_project_timeline.png}
+\caption{Cronograma ejecutivo de la práctica}
+\label{fig:timeline}
+\vspace{0.2em}
+\begin{minipage}{0.92\linewidth}
+\footnotesize \textbf{Interpretación.} El cronograma prioriza selección y comprensión de datos antes de cualquier modelado, consistente con una práctica de formulación analítica.
+\end{minipage}
+\end{figure}
+
+
+\begin{landscape}
+
+\scriptsize
+\setlength{\tabcolsep}{1.5pt}
+\renewcommand{\arraystretch}{1.16}
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.073\linewidth} >{\raggedright\arraybackslash}p{0.266\linewidth} >{\raggedright\arraybackslash}p{0.119\linewidth} >{\raggedright\arraybackslash}p{0.083\linewidth} >{\raggedright\arraybackslash}p{0.193\linewidth} >{\raggedright\arraybackslash}p{0.147\linewidth}}
+\caption{Requerimientos funcionales}\label{tab:functional}\\
+\toprule
+ID & Requerimiento funcional & Categoría & Prioridad & Justificación & Impacto \\
+\midrule
+\endfirsthead
+\caption[]{Requerimientos funcionales (continuación)}\\
+\toprule
+ID & Requerimiento funcional & Categoría & Prioridad & Justificación & Impacto \\
+\midrule
+\endhead
+\midrule
+\multicolumn{6}{r}{Continúa en la siguiente página}\\
+\midrule
+\endfoot
+\bottomrule
+\endlastfoot
+RF-01 & Cargar el dataset seleccionado desde una fuente local versionada. & Ingesta & Alta & Evita dependencias externas y garantiza reproducción en entornos académicos. & Permite reconstruir el análisis sin internet ni APIs. \\
+RF-02 & Validar estructura, número de variables, tipos y variable objetivo. & Calidad de datos & Alta & Previene análisis sobre columnas corruptas o incompatibles. & Reduce riesgo de conclusiones no trazables. \\
+RF-03 & Calcular métricas de completitud, duplicados y balance del objetivo. & Calidad de datos & Alta & La confiabilidad del diagnóstico depende de ausencia de sesgos de captura. & Define si se requiere imputación, depuración o estratificación. \\
+RF-04 & Generar comparación cuantitativa entre tres datasets candidatos. & Selección analítica & Alta & La selección debe sustentarse en criterios medibles y no en preferencia subjetiva. & Justifica el dataset ante evaluación académica. \\
+RF-05 & Construir diccionario exhaustivo de variables con rango, unidad e importancia. & Documentación & Alta & La interpretación clínica necesita semántica clara por variable. & Mejora auditabilidad y transferencia del proyecto. \\
+RF-06 & Calcular estadísticos descriptivos robustos por variable. & EDA & Alta & Percentiles, asimetría y atípicos revelan la estructura real de los datos. & Soporta decisiones de transformación y modelado futuro. \\
+RF-07 & Cuantificar separación entre clases mediante tamaño de efecto. & Análisis estadístico & Alta & El tamaño de efecto aporta evidencia interpretable sin entrenar modelos innecesarios. & Prioriza variables relevantes para diagnóstico. \\
+RF-08 & Identificar correlaciones altas entre variables predictoras. & Análisis estadístico & Media & La redundancia puede afectar interpretabilidad y estabilidad de modelos futuros. & Informa reducción dimensional o regularización posterior. \\
+RF-09 & Exportar tablas finales en formato reutilizable. & Entregables & Media & Las tablas deben poder revisarse, auditarse o integrarse en anexos. & Facilita evaluación y continuidad del trabajo. \\
+RF-10 & Compilar un reporte HTML editorial con figuras, tablas e interpretación. & Reporte & Alta & El entregable final debe comunicar evidencia, no solo producir archivos. & Aumenta claridad, profesionalismo y presentabilidad. \\
+\end{longtable}
+\normalsize
+
+\end{landscape}
+
+
+\begin{landscape}
+
+\scriptsize
+\setlength{\tabcolsep}{1.5pt}
+\renewcommand{\arraystretch}{1.16}
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.084\linewidth} >{\raggedright\arraybackslash}p{0.206\linewidth} >{\raggedright\arraybackslash}p{0.094\linewidth} >{\raggedright\arraybackslash}p{0.281\linewidth} >{\raggedright\arraybackslash}p{0.215\linewidth}}
+\caption{Requerimientos no funcionales}\label{tab:nonfunctional}\\
+\toprule
+ID & Requerimiento no funcional & Prioridad & Justificación & Impacto \\
+\midrule
+\endfirsthead
+\caption[]{Requerimientos no funcionales (continuación)}\\
+\toprule
+ID & Requerimiento no funcional & Prioridad & Justificación & Impacto \\
+\midrule
+\endhead
+\midrule
+\multicolumn{5}{r}{Continúa en la siguiente página}\\
+\midrule
+\endfoot
+\bottomrule
+\endlastfoot
+RNF-01 & Reproducibilidad & Alta & El flujo debe ejecutarse con un único script local y resultados deterministas. & Permite validar el trabajo en cualquier revisión académica. \\
+RNF-02 & Eficiencia computacional & Alta & Solo se cargan datasets livianos y se evita entrenamiento innecesario. & Minimiza tiempo, memoria y consumo de recursos. \\
+RNF-03 & Independencia de red & Alta & No se usan descargas, APIs, nube ni modelos externos. & El proyecto cumple restricciones y protege continuidad operativa. \\
+RNF-04 & Trazabilidad & Alta & Cada figura y tabla declara fuente e interpretación. & Facilita auditoría de evidencia y defensa metodológica. \\
+RNF-05 & Interpretabilidad & Alta & Las métricas se basan en estadística descriptiva y tamaño de efecto. & Evita cajas negras en fases tempranas del proyecto. \\
+RNF-06 & Mantenibilidad & Media & El código separa carga, métricas, visualización y reporte. & Permite extender el análisis sin rehacer la base. \\
+RNF-07 & Portabilidad & Media & Usa únicamente Python, Pandas, NumPy, Matplotlib y scikit-learn. & Reduce fricción de instalación y dependencia de librerías pesadas. \\
+RNF-08 & Calidad visual & Alta & La salida debe usar paleta sobria, espacio en blanco y jerarquía editorial. & Mejora comunicación de hallazgos a audiencias técnicas y ejecutivas. \\
+RNF-09 & Robustez & Media & Las validaciones deben fallar de forma explícita ante cambios de estructura. & Evita reportes silenciosamente inconsistentes. \\
+RNF-10 & Gobernanza ética & Alta & El análisis evita inferencias clínicas individualizadas y trata el dataset como material académico. & Reduce riesgo de uso indebido en decisiones médicas reales. \\
+\end{longtable}
+\normalsize
+
+\end{landscape}
+
+
+\section{Conclusiones}
+\begin{itemize}
+\item La selección del dataset es cuantitativamente defendible: Breast Cancer Wisconsin Diagnostic alcanza 97.7355/100 y supera a los candidatos por balance entre escala, dimensionalidad, interpretabilidad e impacto.
+\item La completitud del 100\% evita imputación en esta fase; por tanto, las diferencias observadas entre clases no están condicionadas por estrategias de reemplazo de datos faltantes.
+\item La clase maligna conserva representación analítica suficiente para exploración, aunque un modelado posterior debería controlar el desbalance con particiones estratificadas.
+\item La presencia de múltiples variables con |d| $\geq$ 1 indica separación estadística fuerte; no obstante, la correlación alta entre medidas geométricas confirma información redundante.
+\item La fase de requerimientos debe priorizar reproducibilidad, trazabilidad, independencia de red y comunicación visual, porque esos atributos hacen defendible el proyecto en un contexto de maestría.
+\end{itemize}
+
+\section{Bibliografía}
+\begin{thebibliography}{9}
+\bibitem{pedregosa2011} Pedregosa, F. et al. (2011). \textit{Scikit-learn: Machine Learning in Python}. Journal of Machine Learning Research, 12, 2825--2830.
+\bibitem{street1993} Street, W. N., Wolberg, W. H., \& Mangasarian, O. L. (1993). \textit{Nuclear feature extraction for breast tumor diagnosis}. IS\&T/SPIE International Symposium on Electronic Imaging.
+\bibitem{wolberg1995} Wolberg, W. H., Street, W. N., \& Mangasarian, O. L. (1995). \textit{Breast cancer diagnosis and prognosis via linear programming}. Operations Research, 43(4), 570--577.
+\end{thebibliography}
+
+\clearpage
+\appendix
+\section{Anexo A. Diccionario exhaustivo de variables}
+La Tabla~\ref{tab:data-dictionary} reproduce el diccionario completo de variables del proyecto, con tipo, descripción, rango observado, unidad, importancia, posibles valores atípicos y observaciones técnicas.
+
+\begin{landscape}
+
+\tiny
+\setlength{\tabcolsep}{1.5pt}
+\renewcommand{\arraystretch}{1.16}
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.101\linewidth} >{\raggedright\arraybackslash}p{0.084\linewidth} >{\raggedright\arraybackslash}p{0.168\linewidth} >{\raggedright\arraybackslash}p{0.084\linewidth} >{\raggedright\arraybackslash}p{0.101\linewidth} >{\raggedright\arraybackslash}p{0.075\linewidth} >{\raggedright\arraybackslash}p{0.134\linewidth} >{\raggedright\arraybackslash}p{0.134\linewidth}}
+\caption{Diccionario exhaustivo de variables}\label{tab:data-dictionary}\\
+\toprule
+Nombre & Tipo & Descripción & Rango / valores & Unidad & Importancia & Posibles valores atípicos & Obs. \\
+\midrule
+\endfirsthead
+\caption[]{Diccionario exhaustivo de variables (continuación)}\\
+\toprule
+Nombre & Tipo & Descripción & Rango / valores & Unidad & Importancia & Posibles valores atípicos & Obs. \\
+\midrule
+\endhead
+\midrule
+\multicolumn{8}{r}{Continúa en la siguiente página}\\
+\midrule
+\endfoot
+\bottomrule
+\endlastfoot
+diagnosis & categórica nominal & Variable objetivo: diagnóstico histopatológico codificado como maligno o benigno. & malignant, benign & categoría clínica & Crítica & No aplica; se valida consistencia de etiquetas. & Es la variable de referencia para segmentar el análisis estadístico. \\
+mean radius & numérica continua & Media de distancia media desde el centro hasta puntos del perímetro celular. & 6.981 a 28.11 & unidades de imagen & Muy alta & 14 casos (2.5\%) fuera de [5.58, 21.9] por regla IQR. & mayor en maligno; |d|=2.21; asimetría moderada. \\
+mean texture & numérica continua & Media de variabilidad de la intensidad de gris en la imagen. & 9.71 a 39.28 & desviación estándar de niveles de gris & Media & 7 casos (1.2\%) fuera de [7.73, 30.2] por regla IQR. & mayor en maligno; |d|=0.94; asimetría moderada. \\
+mean perimeter & numérica continua & Media de longitud del contorno de la masa celular. & 43.79 a 188.5 & unidades de imagen & Muy alta & 13 casos (2.3\%) fuera de [31.8, 147] por regla IQR. & mayor en maligno; |d|=2.29; asimetría moderada. \\
+mean area & numérica continua & Media de superficie proyectada de la masa celular. & 143.5 a 2501 & unidades cuadradas de imagen & Muy alta & 25 casos (4.4\%) fuera de [-123, 1.33e+03] por regla IQR. & mayor en maligno; |d|=2.08; asimetría marcada. \\
+mean smoothness & numérica continua & Media de variación local de longitudes de radio. & 0.05263 a 0.1634 & índice adimensional & Media & 6 casos (1.1\%) fuera de [0.058, 0.134] por regla IQR. & mayor en maligno; |d|=0.79; distribución relativamente estable. \\
+mean compactness & numérica continua & Media de relación de compacidad calculada como perímetro al cuadrado sobre área menos uno. & 0.01938 a 0.3454 & índice adimensional & Alta & 16 casos (2.8\%) fuera de [-0.0333, 0.229] por regla IQR. & mayor en maligno; |d|=1.53; asimetría marcada. \\
+mean concavity & numérica continua & Media de severidad de porciones cóncavas del contorno. & 0 a 0.4268 & índice adimensional & Muy alta & 18 casos (3.2\%) fuera de [-0.122, 0.282] por regla IQR. & mayor en maligno; |d|=2.00; asimetría marcada. \\
+mean concave points & numérica continua & Media de cantidad relativa de puntos cóncavos del contorno. & 0 a 0.2012 & índice adimensional & Muy alta & 10 casos (1.8\%) fuera de [-0.0602, 0.155] por regla IQR. & mayor en maligno; |d|=2.55; asimetría marcada. \\
+mean symmetry & numérica continua & Media de grado de simetría de la estructura celular. & 0.106 a 0.304 & índice adimensional & Media & 15 casos (2.6\%) fuera de [0.111, 0.246] por regla IQR. & mayor en maligno; |d|=0.72; asimetría moderada. \\
+mean fractal dimension & numérica continua & Media de aproximación de complejidad del contorno celular. & 0.04996 a 0.09744 & índice adimensional & Exploratoria & 15 casos (2.6\%) fuera de [0.0451, 0.0787] por regla IQR. & mayor en benigno; |d|=0.03; asimetría marcada. \\
+radius error & numérica continua & Error estándar de distancia media desde el centro hasta puntos del perímetro celular. & 0.1115 a 2.873 & unidades de imagen & Alta & 38 casos (6.7\%) fuera de [-0.137, 0.849] por regla IQR. & mayor en maligno; |d|=1.42; asimetría marcada. \\
+texture error & numérica continua & Error estándar de variabilidad de la intensidad de gris en la imagen. & 0.3602 a 4.885 & desviación estándar de niveles de gris & Exploratoria & 20 casos (3.5\%) fuera de [-0.126, 2.43] por regla IQR. & mayor en benigno; |d|=0.02; asimetría marcada. \\
+perimeter error & numérica continua & Error estándar de longitud del contorno de la masa celular. & 0.757 a 21.98 & unidades de imagen & Alta & 38 casos (6.7\%) fuera de [-1.02, 5.98] por regla IQR. & mayor en maligno; |d|=1.38; asimetría marcada. \\
+area error & numérica continua & Error estándar de superficie proyectada de la masa celular. & 6.802 a 542.2 & unidades cuadradas de imagen & Alta & 65 casos (11.4\%) fuera de [-23.2, 86.2] por regla IQR. & mayor en maligno; |d|=1.35; asimetría marcada. \\
+smoothness error & numérica continua & Error estándar de variación local de longitudes de radio. & 0.001713 a 0.03113 & índice adimensional & Exploratoria & 30 casos (5.3\%) fuera de [0.000703, 0.0126] por regla IQR. & mayor en benigno; |d|=0.14; asimetría marcada. \\
+compactness error & numérica continua & Error estándar de relación de compacidad calculada como perímetro al cuadrado sobre área menos uno. & 0.002252 a 0.1354 & índice adimensional & Exploratoria & 28 casos (4.9\%) fuera de [-0.016, 0.0615] por regla IQR. & mayor en maligno; |d|=0.63; asimetría marcada. \\
+concavity error & numérica continua & Error estándar de severidad de porciones cóncavas del contorno. & 0 a 0.396 & índice adimensional & Exploratoria & 22 casos (3.9\%) fuera de [-0.0253, 0.0825] por regla IQR. & mayor en maligno; |d|=0.54; asimetría marcada. \\
+concave points error & numérica continua & Error estándar de cantidad relativa de puntos cóncavos del contorno. & 0 a 0.05279 & índice adimensional & Media & 19 casos (3.3\%) fuera de [-0.00297, 0.0253] por regla IQR. & mayor en maligno; |d|=0.92; asimetría marcada. \\
+symmetry error & numérica continua & Error estándar de grado de simetría de la estructura celular. & 0.007882 a 0.07895 & índice adimensional & Exploratoria & 27 casos (4.7\%) fuera de [0.00268, 0.036] por regla IQR. & mayor en benigno; |d|=0.01; asimetría marcada. \\
+fractal dimension error & numérica continua & Error estándar de aproximación de complejidad del contorno celular. & 0.0008948 a 0.02984 & índice adimensional & Exploratoria & 28 casos (4.9\%) fuera de [-0.00122, 0.00802] por regla IQR. & mayor en maligno; |d|=0.16; asimetría marcada. \\
+worst radius & numérica continua & Peor valor de distancia media desde el centro hasta puntos del perímetro celular. & 7.93 a 36.04 & unidades de imagen & Muy alta & 17 casos (3.0\%) fuera de [4.34, 27.5] por regla IQR. & mayor en maligno; |d|=2.54; asimetría marcada. \\
+worst texture & numérica continua & Peor valor de variabilidad de la intensidad de gris en la imagen. & 12.02 a 49.54 & desviación estándar de niveles de gris & Media & 5 casos (0.9\%) fuera de [8.12, 42.7] por regla IQR. & mayor en maligno; |d|=1.06; distribución relativamente estable. \\
+worst perimeter & numérica continua & Peor valor de longitud del contorno de la masa celular. & 50.41 a 251.2 & unidades de imagen & Muy alta & 15 casos (2.6\%) fuera de [22.2, 187] por regla IQR. & mayor en maligno; |d|=2.60; asimetría marcada. \\
+worst area & numérica continua & Peor valor de superficie proyectada de la masa celular. & 185.2 a 4254 & unidades cuadradas de imagen & Muy alta & 35 casos (6.2\%) fuera de [-338, 1.94e+03] por regla IQR. & mayor en maligno; |d|=2.23; asimetría marcada. \\
+worst smoothness & numérica continua & Peor valor de variación local de longitudes de radio. & 0.07117 a 0.2226 & índice adimensional & Media & 7 casos (1.2\%) fuera de [0.0725, 0.19] por regla IQR. & mayor en maligno; |d|=0.96; distribución relativamente estable. \\
+worst compactness & numérica continua & Peor valor de relación de compacidad calculada como perímetro al cuadrado sobre área menos uno. & 0.02729 a 1.058 & índice adimensional & Alta & 16 casos (2.8\%) fuera de [-0.141, 0.627] por regla IQR. & mayor en maligno; |d|=1.51; asimetría marcada. \\
+worst concavity & numérica continua & Peor valor de severidad de porciones cóncavas del contorno. & 0 a 1.252 & índice adimensional & Alta & 12 casos (2.1\%) fuera de [-0.288, 0.786] por regla IQR. & mayor en maligno; |d|=1.81; asimetría marcada. \\
+worst concave points & numérica continua & Peor valor de cantidad relativa de puntos cóncavos del contorno. & 0 a 0.291 & índice adimensional & Muy alta & 0 casos (0.0\%) fuera de [-0.0798, 0.306] por regla IQR. & mayor en maligno; |d|=2.69; distribución relativamente estable. \\
+worst symmetry & numérica continua & Peor valor de grado de simetría de la estructura celular. & 0.1565 a 0.6638 & índice adimensional & Media & 23 casos (4.0\%) fuera de [0.149, 0.419] por regla IQR. & mayor en maligno; |d|=0.95; asimetría marcada. \\
+worst fractal dimension & numérica continua & Peor valor de aproximación de complejidad del contorno celular. & 0.05504 a 0.2075 & índice adimensional & Media & 24 casos (4.2\%) fuera de [0.0405, 0.123] por regla IQR. & mayor en maligno; |d|=0.71; asimetría marcada. \\
+\end{longtable}
+\normalsize
+
+\end{landscape}
+
+
+\section{Anexo B. Estadística descriptiva completa}
+Las Tablas~\ref{tab:descriptive-position} y~\ref{tab:descriptive-signal} presentan los estadísticos de posición, dispersión, asimetría, atípicos IQR y señal univariada conservados desde el reporte HTML.
+
+\begin{landscape}
+
+\tiny
+\setlength{\tabcolsep}{1.5pt}
+\renewcommand{\arraystretch}{1.16}
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.148\linewidth} >{\raggedright\arraybackslash}p{0.056\linewidth} >{\raggedright\arraybackslash}p{0.074\linewidth} >{\raggedright\arraybackslash}p{0.083\linewidth} >{\raggedright\arraybackslash}p{0.074\linewidth} >{\raggedright\arraybackslash}p{0.074\linewidth} >{\raggedright\arraybackslash}p{0.074\linewidth} >{\raggedright\arraybackslash}p{0.074\linewidth} >{\raggedright\arraybackslash}p{0.074\linewidth} >{\raggedright\arraybackslash}p{0.074\linewidth} >{\raggedright\arraybackslash}p{0.074\linewidth}}
+\caption{Estadísticos descriptivos de posición y dispersión}\label{tab:descriptive-position}\\
+\toprule
+Variable & n & Media & Desv. estándar & Mínimo & P1 & P25 & Mediana & P75 & P99 & Máximo \\
+\midrule
+\endfirsthead
+\caption[]{Estadísticos descriptivos de posición y dispersión (continuación)}\\
+\toprule
+Variable & n & Media & Desv. estándar & Mínimo & P1 & P25 & Mediana & P75 & P99 & Máximo \\
+\midrule
+\endhead
+\midrule
+\multicolumn{11}{r}{Continúa en la siguiente página}\\
+\midrule
+\endfoot
+\bottomrule
+\endlastfoot
+mean radius & 569.0 & 14.13 & 3.524 & 6.981 & 8.4584 & 11.70 & 13.37 & 15.78 & 24.37 & 28.11 \\
+mean texture & 569.0 & 19.29 & 4.301 & 9.71 & 10.93 & 16.17 & 18.84 & 21.80 & 30.65 & 39.28 \\
+mean perimeter & 569.0 & 91.97 & 24.30 & 43.79 & 53.83 & 75.17 & 86.24 & 104.1 & 165.7 & 188.5 \\
+mean area & 569.0 & 654.9 & 351.9 & 143.5 & 215.7 & 420.3 & 551.1 & 782.7 & 1,786.6 & 2,501.0 \\
+mean smoothness & 569.0 & 0.0964 & 0.0141 & 0.0526 & 0.0687 & 0.0864 & 0.0959 & 0.1053 & 0.1329 & 0.1634 \\
+mean compactness & 569.0 & 0.1043 & 0.0528 & 0.0194 & 0.0334 & 0.0649 & 0.0926 & 0.1304 & 0.2772 & 0.3454 \\
+mean concavity & 569.0 & 0.0888 & 0.0797 & 0 & 0 & 0.0296 & 0.0615 & 0.1307 & 0.3517 & 0.4268 \\
+mean concave points & 569.0 & 0.0489 & 0.0388 & 0 & 0 & 0.0203 & 0.0335 & 0.074 & 0.1642 & 0.2012 \\
+mean symmetry & 569.0 & 0.1812 & 0.0274 & 0.106 & 0.1295 & 0.1619 & 0.1792 & 0.1957 & 0.2596 & 0.304 \\
+mean fractal dimension & 569.0 & 0.0628 & 0.0071 & 0.05 & 0.0515 & 0.0577 & 0.0615 & 0.0661 & 0.0854 & 0.0974 \\
+radius error & 569.0 & 0.4052 & 0.2773 & 0.1115 & 0.1197 & 0.2324 & 0.3242 & 0.4789 & 1.2913 & 2.873 \\
+texture error & 569.0 & 1.2169 & 0.5516 & 0.3602 & 0.4105 & 0.8339 & 1.108 & 1.474 & 2.9154 & 4.885 \\
+perimeter error & 569.0 & 2.8661 & 2.0219 & 0.757 & 0.9532 & 1.606 & 2.287 & 3.357 & 9.69 & 21.98 \\
+area error & 569.0 & 40.34 & 45.49 & 6.802 & 8.5144 & 17.85 & 24.53 & 45.19 & 177.7 & 542.2 \\
+smoothness error & 569.0 & 0.007 & 0.003 & 0.0017 & 0.0031 & 0.0052 & 0.0064 & 0.0081 & 0.0173 & 0.0311 \\
+compactness error & 569.0 & 0.0255 & 0.0179 & 0.0023 & 0.0047 & 0.0131 & 0.0204 & 0.0324 & 0.0899 & 0.1354 \\
+concavity error & 569.0 & 0.0319 & 0.0302 & 0 & 0 & 0.0151 & 0.0259 & 0.042 & 0.1223 & 0.396 \\
+concave points error & 569.0 & 0.0118 & 0.0062 & 0 & 0 & 0.0076 & 0.0109 & 0.0147 & 0.0312 & 0.0528 \\
+symmetry error & 569.0 & 0.0205 & 0.0083 & 0.0079 & 0.0105 & 0.0152 & 0.0187 & 0.0235 & 0.0522 & 0.079 \\
+fractal dimension error & 569.0 & 0.0038 & 0.0026 & 0.0009 & 0.0011 & 0.0022 & 0.0032 & 0.0046 & 0.0126 & 0.0298 \\
+worst radius & 569.0 & 16.27 & 4.8332 & 7.93 & 9.2076 & 13.01 & 14.97 & 18.79 & 30.76 & 36.04 \\
+worst texture & 569.0 & 25.68 & 6.1463 & 12.02 & 15.20 & 21.08 & 25.41 & 29.72 & 41.80 & 49.54 \\
+worst perimeter & 569.0 & 107.3 & 33.60 & 50.41 & 58.27 & 84.11 & 97.66 & 125.4 & 208.3 & 251.2 \\
+worst area & 569.0 & 880.6 & 569.4 & 185.2 & 256.2 & 515.3 & 686.5 & 1,084.0 & 2,918.2 & 4,254.0 \\
+worst smoothness & 569.0 & 0.1324 & 0.0228 & 0.0712 & 0.0879 & 0.1166 & 0.1313 & 0.146 & 0.1889 & 0.2226 \\
+worst compactness & 569.0 & 0.2543 & 0.1573 & 0.0273 & 0.0501 & 0.1472 & 0.2119 & 0.3391 & 0.7786 & 1.058 \\
+worst concavity & 569.0 & 0.2722 & 0.2086 & 0 & 0 & 0.1145 & 0.2267 & 0.3829 & 0.9024 & 1.252 \\
+worst concave points & 569.0 & 0.1146 & 0.0657 & 0 & 0 & 0.0649 & 0.0999 & 0.1614 & 0.2692 & 0.291 \\
+worst symmetry & 569.0 & 0.2901 & 0.0619 & 0.1565 & 0.176 & 0.2504 & 0.2822 & 0.3179 & 0.4869 & 0.6638 \\
+worst fractal dimension & 569.0 & 0.0839 & 0.0181 & 0.055 & 0.0586 & 0.0715 & 0.08 & 0.0921 & 0.1406 & 0.2075 \\
+\end{longtable}
+\normalsize
+
+\end{landscape}
+
+
+\begin{landscape}
+
+\scriptsize
+\setlength{\tabcolsep}{1.5pt}
+\renewcommand{\arraystretch}{1.16}
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.235\linewidth} >{\raggedright\arraybackslash}p{0.117\linewidth} >{\raggedright\arraybackslash}p{0.098\linewidth} >{\raggedright\arraybackslash}p{0.176\linewidth} >{\raggedright\arraybackslash}p{0.117\linewidth} >{\raggedright\arraybackslash}p{0.137\linewidth}}
+\caption{Asimetría, señal univariada y atípicos IQR}\label{tab:descriptive-signal}\\
+\toprule
+Variable & Asimetría & |d| & Dirección & Atípicos IQR & Atípicos IQR (\%) \\
+\midrule
+\endfirsthead
+\caption[]{Asimetría, señal univariada y atípicos IQR (continuación)}\\
+\toprule
+Variable & Asimetría & |d| & Dirección & Atípicos IQR & Atípicos IQR (\%) \\
+\midrule
+\endhead
+\midrule
+\multicolumn{6}{r}{Continúa en la siguiente página}\\
+\midrule
+\endfoot
+\bottomrule
+\endlastfoot
+mean radius & 0.9424 & 2.2055 & Mayor en maligno & 14.00 & 2.4605 \\
+mean texture & 0.6504 & 0.9423 & Mayor en maligno & 7 & 1.2302 \\
+mean perimeter & 0.9907 & 2.2895 & Mayor en maligno & 13.00 & 2.2847 \\
+mean area & 1.6457 & 2.0757 & Mayor en maligno & 25.00 & 4.3937 \\
+mean smoothness & 0.4563 & 0.793 & Mayor en maligno & 6 & 1.0545 \\
+mean compactness & 1.1901 & 1.5346 & Mayor en maligno & 16.00 & 2.812 \\
+mean concavity & 1.4012 & 2.0033 & Mayor en maligno & 18.00 & 3.1634 \\
+mean concave points & 1.1712 & 2.5452 & Mayor en maligno & 10.00 & 1.7575 \\
+mean symmetry & 0.7256 & 0.723 & Mayor en maligno & 15.00 & 2.6362 \\
+mean fractal dimension & 1.3045 & 0.0265 & Mayor en benigno & 15.00 & 2.6362 \\
+radius error & 3.0886 & 1.4217 & Mayor en maligno & 38.00 & 6.6784 \\
+texture error & 1.6464 & 0.0171 & Mayor en benigno & 20.00 & 3.5149 \\
+perimeter error & 3.4436 & 1.3816 & Mayor en maligno & 38.00 & 6.6784 \\
+area error & 5.4472 & 1.3534 & Mayor en maligno & 65.00 & 11.42 \\
+smoothness error & 2.3145 & 0.1387 & Mayor en benigno & 30.00 & 5.2724 \\
+compactness error & 1.9022 & 0.6327 & Mayor en maligno & 28.00 & 4.9209 \\
+concavity error & 5.1105 & 0.5416 & Mayor en maligno & 22.00 & 3.8664 \\
+concave points error & 1.4447 & 0.9228 & Mayor en maligno & 19.00 & 3.3392 \\
+symmetry error & 2.1951 & 0.0135 & Mayor en benigno & 27.00 & 4.7452 \\
+fractal dimension error & 3.924 & 0.1615 & Mayor en maligno & 28.00 & 4.9209 \\
+worst radius & 1.1031 & 2.5439 & Mayor en maligno & 17.00 & 2.9877 \\
+worst texture & 0.4983 & 1.0605 & Mayor en maligno & 5 & 0.8787 \\
+worst perimeter & 1.1282 & 2.5982 & Mayor en maligno & 15.00 & 2.6362 \\
+worst area & 1.8594 & 2.2302 & Mayor en maligno & 35.00 & 6.1511 \\
+worst smoothness & 0.4154 & 0.9596 & Mayor en maligno & 7 & 1.2302 \\
+worst compactness & 1.4736 & 1.5126 & Mayor en maligno & 16.00 & 2.812 \\
+worst concavity & 1.1502 & 1.8119 & Mayor en maligno & 12.00 & 2.109 \\
+worst concave points & 0.4926 & 2.6926 & Mayor en maligno & 0 & 0 \\
+worst symmetry & 1.4339 & 0.9453 & Mayor en maligno & 23.00 & 4.0422 \\
+worst fractal dimension & 1.6626 & 0.7068 & Mayor en maligno & 24.00 & 4.2179 \\
+\end{longtable}
+\normalsize
+
+\end{landscape}
+
+
+\section{Anexo C. Reproducibilidad}
+El proyecto se reproduce desde la raíz del repositorio con:
+
+\begin{verbatim}
+python src/build_project.py
+\end{verbatim}
+
+El PDF se compone a partir de los artefactos finales con:
+
+\begin{verbatim}
+python src/build_pdf_report.py
+\end{verbatim}
+
+Durante la generación de este documento no se recalcularon estadísticas ni se regeneraron gráficos analíticos. Solo se transformaron los artefactos existentes en una versión académica en PDF.
+
+\end{document}
