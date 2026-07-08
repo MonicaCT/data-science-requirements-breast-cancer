@@ -1,0 +1,11 @@
+﻿ID,Requerimiento no funcional,Prioridad,Justificación,Impacto
+RNF-01,Reproducibilidad,Alta,El flujo debe ejecutarse con un único script local y resultados deterministas.,Permite validar el trabajo en cualquier revisión académica.
+RNF-02,Eficiencia computacional,Alta,Solo se cargan datasets livianos y se evita entrenamiento innecesario.,"Minimiza tiempo, memoria y consumo de recursos."
+RNF-03,Independencia de red,Alta,"No se usan descargas, APIs, nube ni modelos externos.",El proyecto cumple restricciones y protege continuidad operativa.
+RNF-04,Trazabilidad,Alta,Cada figura y tabla declara fuente e interpretación.,Facilita auditoría de evidencia y defensa metodológica.
+RNF-05,Interpretabilidad,Alta,Las métricas se basan en estadística descriptiva y tamaño de efecto.,Evita cajas negras en fases tempranas del proyecto.
+RNF-06,Mantenibilidad,Media,"El código separa carga, métricas, visualización y reporte.",Permite extender el análisis sin rehacer la base.
+RNF-07,Portabilidad,Media,"Usa únicamente Python, Pandas, NumPy, Matplotlib y scikit-learn.",Reduce fricción de instalación y dependencia de librerías pesadas.
+RNF-08,Calidad visual,Alta,"La salida debe usar paleta sobria, espacio en blanco y jerarquía editorial.",Mejora comunicación de hallazgos a audiencias técnicas y ejecutivas.
+RNF-09,Robustez,Media,Las validaciones deben fallar de forma explícita ante cambios de estructura.,Evita reportes silenciosamente inconsistentes.
+RNF-10,Gobernanza ética,Alta,El análisis evita inferencias clínicas individualizadas y trata el dataset como material académico.,Reduce riesgo de uso indebido en decisiones médicas reales.

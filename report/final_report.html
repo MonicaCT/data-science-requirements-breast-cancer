@@ -1,0 +1,1538 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Práctica de Ciencia de Datos - Selección y caracterización de dataset</title>
+  
+    <style>
+      :root {
+        --paper: #fbfaf7;
+        --ink: #22272b;
+        --muted: #69737a;
+        --line: #d9d6ce;
+        --red: #a64f4f;
+        --teal: #4f8a89;
+        --blue: #536f8a;
+        --gold: #b79a4a;
+      }
+      html { background: var(--paper); }
+      body {
+        margin: 0 auto;
+        max-width: 1180px;
+        padding: 54px 54px 82px;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: "Segoe UI", Arial, sans-serif;
+        line-height: 1.62;
+      }
+      header { border-bottom: 1px solid var(--line); padding-bottom: 30px; margin-bottom: 42px; }
+      .kicker { color: var(--red); text-transform: uppercase; letter-spacing: .12em; font-size: 12px; font-weight: 700; }
+      h1 {
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 48px;
+        line-height: 1.05;
+        max-width: 980px;
+        margin: 12px 0 18px;
+        font-weight: 500;
+      }
+      h2 {
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 30px;
+        line-height: 1.2;
+        margin: 52px 0 16px;
+        border-top: 1px solid var(--line);
+        padding-top: 28px;
+        font-weight: 500;
+      }
+      h3 { margin: 30px 0 10px; font-size: 18px; }
+      p { max-width: 900px; }
+      .subtitle { font-size: 18px; color: #434b50; max-width: 920px; }
+      .meta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+      .pill { border: 1px solid var(--line); padding: 7px 11px; border-radius: 999px; color: #40484d; background: #fffdf9; font-size: 13px; }
+      .grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin: 26px 0 18px; }
+      .card { background: #fffdf9; border: 1px solid var(--line); padding: 18px; }
+      .card .value { font-size: 28px; font-weight: 750; color: var(--red); }
+      .card .label { color: var(--muted); font-size: 13px; margin-top: 4px; }
+      figure { margin: 34px 0 40px; }
+      figure img { width: 100%; height: auto; border: 1px solid var(--line); background: var(--paper); }
+      figcaption { color: var(--muted); font-size: 13px; margin-top: 8px; }
+      .table-wrap { overflow-x: auto; margin: 18px 0 34px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+      table.data-table { width: 100%; border-collapse: collapse; font-size: 12.5px; background: #fffdf9; }
+      table.data-table th {
+        text-align: left;
+        padding: 10px 9px;
+        border-bottom: 1px solid var(--line);
+        color: var(--ink);
+        font-weight: 700;
+        background: #f2f0eb;
+        vertical-align: bottom;
+      }
+      table.data-table td { padding: 9px; border-bottom: 1px solid #e8e5dd; vertical-align: top; }
+      table.data-table tr:nth-child(even) td { background: #fbfaf7; }
+      .note { border-left: 3px solid var(--red); padding: 12px 16px; color: #3f474c; background: #fffdf9; max-width: 920px; }
+      .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+      .source { color: var(--muted); font-size: 12.5px; }
+      ul { max-width: 900px; }
+      li { margin-bottom: 8px; }
+      code { background: #f1eee8; padding: 2px 5px; border-radius: 3px; }
+      @media (max-width: 860px) {
+        body { padding: 28px 18px 60px; }
+        h1 { font-size: 34px; }
+        .grid, .two-col { grid-template-columns: 1fr; }
+      }
+    </style>
+    
+</head>
+<body>
+  <header>
+    <div class="kicker">Proyecto reproducible de maestría en Ciencia de Datos</div>
+    <h1>Selección, caracterización y especificación de requerimientos para un sistema analítico biomédico</h1>
+    <p class="subtitle">
+      Entregable académico de las fases 1 a 3: búsqueda local de tres datasets, selección cuantitativa,
+      descripción exhaustiva del conjunto elegido, análisis estadístico exploratorio y requerimientos
+      funcionales/no funcionales con justificación técnica.
+    </p>
+    <div class="meta">
+      <span class="pill">Fecha: 2026-07-07</span>
+      <span class="pill">Dataset seleccionado: Breast Cancer Wisconsin Diagnostic</span>
+      <span class="pill">Python + Pandas + NumPy + Matplotlib + scikit-learn</span>
+      <span class="pill">Sin APIs, nube ni modelos externos de IA</span>
+    </div>
+  </header>
+
+  <section>
+    <h2>Resumen ejecutivo</h2>
+    <p>
+      Se evaluaron tres datasets disponibles localmente en scikit-learn. El dataset
+      <strong>Breast Cancer Wisconsin Diagnostic</strong> obtuvo el mayor puntaje ponderado (97.7/100)
+      al combinar tamaño muestral, riqueza dimensional, completitud, preparación analítica,
+      interpretabilidad e impacto. La selección es apropiada para una práctica de maestría porque
+      permite discutir calidad de datos, separación estadística entre clases, redundancia de variables
+      y requerimientos de un flujo analítico reproducible sin depender de servicios externos.
+    </p>
+    <div class="grid">
+      <div class="card"><div class="value">569</div><div class="label">observaciones</div></div>
+      <div class="card"><div class="value">30</div><div class="label">variables predictoras</div></div>
+      <div class="card"><div class="value">0.00%</div><div class="label">valores faltantes</div></div>
+      <div class="card"><div class="value">16</div><div class="label">variables con |d| >= 1</div></div>
+    </div>
+    <p class="note">
+      Hallazgo central: la evidencia univariada más fuerte aparece en <strong>worst concave points</strong>
+      (|d|=2.69), mientras que la correlación máxima absoluta entre predictoras alcanza
+      0.998. Esto sugiere alta señal diagnóstica, pero también redundancia morfológica que debe
+      gestionarse si el proyecto avanza hacia modelado predictivo.
+    </p>
+    
+    <figure>
+      <img src="../figures/12_executive_dashboard.png" alt="Dashboard ejecutivo con métricas de calidad, balance y variables prioritarias.">
+      <figcaption>Dashboard ejecutivo con métricas de calidad, balance y variables prioritarias.</figcaption>
+    </figure>
+    
+  </section>
+
+  <section>
+    <h2>Fase 1. Búsqueda, comparación y selección del dataset</h2>
+    <p>
+      Para cumplir la restricción de no usar internet, APIs ni servicios en la nube, la búsqueda se limitó
+      al catálogo local de datasets incluidos en scikit-learn. Esta decisión reduce el consumo computacional,
+      elimina riesgos de disponibilidad externa y mantiene la reproducibilidad. Los candidatos fueron:
+      Breast Cancer Wisconsin Diagnostic, Wine Recognition y Diabetes Progression.
+    </p>
+    
+    <figure>
+      <img src="../figures/01_project_flow.png" alt="Flujo metodológico seguido para seleccionar y analizar el dataset.">
+      <figcaption>Flujo metodológico seguido para seleccionar y analizar el dataset.</figcaption>
+    </figure>
+    
+    <h3>Tabla comparativa técnica</h3>
+    <div class="table-wrap"><table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Dataset</th>
+      <th>Dominio</th>
+      <th>Tarea</th>
+      <th>Objetivo</th>
+      <th>Observaciones</th>
+      <th>Variables predictoras</th>
+      <th>Valores faltantes (%)</th>
+      <th>Filas duplicadas</th>
+      <th>Balance / objetivo</th>
+      <th>Puntaje tamaño</th>
+      <th>Puntaje dimensionalidad</th>
+      <th>Puntaje completitud</th>
+      <th>Puntaje preparación analítica</th>
+      <th>Puntaje interpretabilidad</th>
+      <th>Puntaje impacto</th>
+      <th>Puntaje total ponderado</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Breast Cancer Wisconsin Diagnostic</td>
+      <td>Salud / diagnóstico oncológico</td>
+      <td>Clasificación binaria</td>
+      <td>diagnóstico de masa mamaria</td>
+      <td>569.0</td>
+      <td>30.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>clase 0: 212 / clase 1: 357</td>
+      <td>100.0000</td>
+      <td>100.0000</td>
+      <td>100.0</td>
+      <td>94.9033</td>
+      <td>90.0</td>
+      <td>100.0</td>
+      <td>97.7355</td>
+    </tr>
+    <tr>
+      <td>Diabetes Progression</td>
+      <td>Salud / progresión metabólica</td>
+      <td>Regresión</td>
+      <td>progresión de enfermedad a un año</td>
+      <td>442.0</td>
+      <td>10.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>No aplica: objetivo continuo</td>
+      <td>88.1363</td>
+      <td>57.7350</td>
+      <td>100.0</td>
+      <td>100.0000</td>
+      <td>73.0</td>
+      <td>90.0</td>
+      <td>83.5311</td>
+    </tr>
+    <tr>
+      <td>Wine Recognition</td>
+      <td>Química analítica / enología</td>
+      <td>Clasificación multiclase</td>
+      <td>cultivar de vino</td>
+      <td>178.0</td>
+      <td>13.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>clase 0: 59 / clase 1: 71 / clase 2: 48</td>
+      <td>55.9312</td>
+      <td>65.8281</td>
+      <td>100.0</td>
+      <td>96.1798</td>
+      <td>86.0</td>
+      <td>67.0</td>
+      <td>76.1754</td>
+    </tr>
+  </tbody>
+</table></div>
+    
+    <figure>
+      <img src="../figures/02_dataset_comparison_matrix.png" alt="Matriz comparativa de criterios normalizados para los tres datasets candidatos.">
+      <figcaption>Matriz comparativa de criterios normalizados para los tres datasets candidatos.</figcaption>
+    </figure>
+    
+    
+    <figure>
+      <img src="../figures/03_dataset_radar.png" alt="Radar chart del perfil multicriterio de los datasets candidatos.">
+      <figcaption>Radar chart del perfil multicriterio de los datasets candidatos.</figcaption>
+    </figure>
+    
+    <p>
+      La ponderación priorizó evidencia verificable: 25% tamaño muestral, 20% dimensionalidad,
+      15% completitud, 15% preparación analítica, 15% interpretabilidad y 10% impacto. El dataset
+      seleccionado domina por volumen, número de variables, completitud total y relevancia biomédica.
+      Wine Recognition es técnicamente limpio, pero tiene menor escala e impacto para una discusión
+      socio-técnica. Diabetes Progression posee impacto alto, aunque su target continuo y variables
+      estandarizadas reducen interpretabilidad variable por variable.
+    </p>
+  </section>
+
+  <section>
+    <h2>Fase 2. Contexto, problema, objetivo y alcance</h2>
+    <div class="two-col">
+      <div>
+        <h3>Contexto</h3>
+        <p>
+          El análisis biomédico basado en imágenes requiere transformar mediciones morfológicas en evidencia
+          interpretable. Este dataset resume características geométricas y de textura de núcleos celulares
+          obtenidas a partir de aspiración con aguja fina de masas mamarias.
+        </p>
+        <h3>Problema</h3>
+        <p>
+          Antes de plantear un sistema predictivo, es necesario demostrar que los datos son completos,
+          comprensibles, estadísticamente informativos y gobernables. Sin esa base, cualquier modelo posterior
+          podría amplificar redundancias, sesgos de clase o interpretaciones clínicas débiles.
+        </p>
+        <h3>Objetivo</h3>
+        <p>
+          Seleccionar y caracterizar un dataset biomédico reproducible, identificar sus variables críticas,
+          evaluar calidad estadística y definir requerimientos de un sistema analítico que pueda sostener
+          futuras fases de modelado con rigor académico.
+        </p>
+      </div>
+      <div>
+        <h3>Alcance</h3>
+        <p>
+          El alcance cubre selección de dataset, análisis exploratorio, diccionario de datos, visualizaciones
+          editoriales y requerimientos. No incluye entrenamiento de modelos clínicos ni recomendaciones médicas
+          individuales, porque las fases solicitadas no lo exigen y porque se prioriza eficiencia.
+        </p>
+        <h3>Beneficiarios</h3>
+        <p>
+          Los beneficiarios son estudiantes e investigadores de ciencia de datos, docentes evaluadores,
+          equipos de analítica biomédica y responsables de gobernanza de datos que requieran una base
+          reproducible para decisiones metodológicas.
+        </p>
+        <h3>Resultados esperados</h3>
+        <p>
+          Se espera una selección defendible, un inventario de variables accionable, evidencia de calidad de
+          datos, detección de señales estadísticas relevantes, visualizaciones publicables y especificación
+          clara de requerimientos para continuidad del proyecto.
+        </p>
+      </div>
+    </div>
+
+    <h3>Resumen de calidad del dataset</h3>
+    <div class="table-wrap"><table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Indicador</th>
+      <th>Resultado</th>
+      <th>Interpretación técnica</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Observaciones</td>
+      <td>569</td>
+      <td>Tamaño suficiente para exploración estadística y especificación de requerimientos.</td>
+    </tr>
+    <tr>
+      <td>Variables predictoras</td>
+      <td>30</td>
+      <td>Cobertura morfológica amplia: medias, errores estándar y peores valores.</td>
+    </tr>
+    <tr>
+      <td>Variable objetivo</td>
+      <td>diagnosis</td>
+      <td>Etiqueta clínica binaria para comparar patrones entre masas benignas y malignas.</td>
+    </tr>
+    <tr>
+      <td>Valores faltantes</td>
+      <td>0 (0.00%)</td>
+      <td>No se requiere imputación; se preserva trazabilidad.</td>
+    </tr>
+    <tr>
+      <td>Filas duplicadas</td>
+      <td>0</td>
+      <td>No se detectan registros duplicados exactos en el conjunto final.</td>
+    </tr>
+    <tr>
+      <td>Distribución objetivo</td>
+      <td>benign: 357; malignant: 212</td>
+      <td>Existe desbalance moderado, no extremo.</td>
+    </tr>
+    <tr>
+      <td>Proporción minoritaria</td>
+      <td>37.3%</td>
+      <td>La clase maligna conserva representación analítica suficiente.</td>
+    </tr>
+    <tr>
+      <td>Variables con atípicos IQR</td>
+      <td>29 de 30</td>
+      <td>Los atípicos deben revisarse como extremos biológicos plausibles, no eliminarse por defecto.</td>
+    </tr>
+    <tr>
+      <td>Mayor correlación absoluta</td>
+      <td>mean radius vs mean perimeter: 0.998</td>
+      <td>Sugiere redundancia morfológica que debe controlarse en modelado posterior.</td>
+    </tr>
+    <tr>
+      <td>Variables con |d| >= 1</td>
+      <td>16</td>
+      <td>La separación univariada es fuerte en varias variables, en especial medidas de concavidad y tamaño.</td>
+    </tr>
+  </tbody>
+</table></div>
+    
+    <figure>
+      <img src="../figures/04_missingness_map.png" alt="Diagrama de completitud por familia de variables.">
+      <figcaption>Diagrama de completitud por familia de variables.</figcaption>
+    </figure>
+    
+    
+    <figure>
+      <img src="../figures/05_target_distribution.png" alt="Distribución de la variable objetivo diagnóstico.">
+      <figcaption>Distribución de la variable objetivo diagnóstico.</figcaption>
+    </figure>
+    
+    
+    <figure>
+      <img src="../figures/06_effect_size_lollipop.png" alt="Ranking de variables por tamaño de efecto entre diagnósticos.">
+      <figcaption>Ranking de variables por tamaño de efecto entre diagnósticos.</figcaption>
+    </figure>
+    
+    
+    <figure>
+      <img src="../figures/07_correlation_heatmap.png" alt="Heatmap de correlaciones entre variables con mayor señal estadística.">
+      <figcaption>Heatmap de correlaciones entre variables con mayor señal estadística.</figcaption>
+    </figure>
+    
+    
+    <figure>
+      <img src="../figures/08_distribution_panel.png" alt="Distribuciones comparadas de las seis variables prioritarias.">
+      <figcaption>Distribuciones comparadas de las seis variables prioritarias.</figcaption>
+    </figure>
+    
+    
+    <figure>
+      <img src="../figures/09_boxplot_panel.png" alt="Boxplots robustos por diagnóstico para variables prioritarias.">
+      <figcaption>Boxplots robustos por diagnóstico para variables prioritarias.</figcaption>
+    </figure>
+    
+
+    <h3>Diccionario exhaustivo de variables</h3>
+    <p>
+      Cada variable se describe por tipo, rango observado, unidad, importancia estadística,
+      posibles atípicos y observaciones. La importancia se calcula mediante tamaño de efecto absoluto
+      entre clases, no mediante un modelo entrenado.
+    </p>
+    <div class="table-wrap"><table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Nombre</th>
+      <th>Tipo</th>
+      <th>Descripción</th>
+      <th>Rango / valores</th>
+      <th>Unidad</th>
+      <th>Importancia</th>
+      <th>Posibles valores atípicos</th>
+      <th>Observaciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>diagnosis</td>
+      <td>categórica nominal</td>
+      <td>Variable objetivo: diagnóstico histopatológico codificado como maligno o benigno.</td>
+      <td>malignant, benign</td>
+      <td>categoría clínica</td>
+      <td>Crítica</td>
+      <td>No aplica; se valida consistencia de etiquetas.</td>
+      <td>Es la variable de referencia para segmentar el análisis estadístico.</td>
+    </tr>
+    <tr>
+      <td>mean radius</td>
+      <td>numérica continua</td>
+      <td>Media de distancia media desde el centro hasta puntos del perímetro celular.</td>
+      <td>6.981 a 28.11</td>
+      <td>unidades de imagen</td>
+      <td>Muy alta</td>
+      <td>14 casos (2.5%) fuera de [5.58, 21.9] por regla IQR.</td>
+      <td>mayor en maligno; |d|=2.21; asimetría moderada.</td>
+    </tr>
+    <tr>
+      <td>mean texture</td>
+      <td>numérica continua</td>
+      <td>Media de variabilidad de la intensidad de gris en la imagen.</td>
+      <td>9.71 a 39.28</td>
+      <td>desviación estándar de niveles de gris</td>
+      <td>Media</td>
+      <td>7 casos (1.2%) fuera de [7.73, 30.2] por regla IQR.</td>
+      <td>mayor en maligno; |d|=0.94; asimetría moderada.</td>
+    </tr>
+    <tr>
+      <td>mean perimeter</td>
+      <td>numérica continua</td>
+      <td>Media de longitud del contorno de la masa celular.</td>
+      <td>43.79 a 188.5</td>
+      <td>unidades de imagen</td>
+      <td>Muy alta</td>
+      <td>13 casos (2.3%) fuera de [31.8, 147] por regla IQR.</td>
+      <td>mayor en maligno; |d|=2.29; asimetría moderada.</td>
+    </tr>
+    <tr>
+      <td>mean area</td>
+      <td>numérica continua</td>
+      <td>Media de superficie proyectada de la masa celular.</td>
+      <td>143.5 a 2501</td>
+      <td>unidades cuadradas de imagen</td>
+      <td>Muy alta</td>
+      <td>25 casos (4.4%) fuera de [-123, 1.33e+03] por regla IQR.</td>
+      <td>mayor en maligno; |d|=2.08; asimetría marcada.</td>
+    </tr>
+    <tr>
+      <td>mean smoothness</td>
+      <td>numérica continua</td>
+      <td>Media de variación local de longitudes de radio.</td>
+      <td>0.05263 a 0.1634</td>
+      <td>índice adimensional</td>
+      <td>Media</td>
+      <td>6 casos (1.1%) fuera de [0.058, 0.134] por regla IQR.</td>
+      <td>mayor en maligno; |d|=0.79; distribución relativamente estable.</td>
+    </tr>
+    <tr>
+      <td>mean compactness</td>
+      <td>numérica continua</td>
+      <td>Media de relación de compacidad calculada como perímetro al cuadrado sobre área menos uno.</td>
+      <td>0.01938 a 0.3454</td>
+      <td>índice adimensional</td>
+      <td>Alta</td>
+      <td>16 casos (2.8%) fuera de [-0.0333, 0.229] por regla IQR.</td>
+      <td>mayor en maligno; |d|=1.53; asimetría marcada.</td>
+    </tr>
+    <tr>
+      <td>mean concavity</td>
+      <td>numérica continua</td>
+      <td>Media de severidad de porciones cóncavas del contorno.</td>
+      <td>0 a 0.4268</td>
+      <td>índice adimensional</td>
+      <td>Muy alta</td>
+      <td>18 casos (3.2%) fuera de [-0.122, 0.282] por regla IQR.</td>
+      <td>mayor en maligno; |d|=2.00; asimetría marcada.</td>
+    </tr>
+    <tr>
+      <td>mean concave points</td>
+      <td>numérica continua</td>
+      <td>Media de cantidad relativa de puntos cóncavos del contorno.</td>
+      <td>0 a 0.2012</td>
+      <td>índice adimensional</td>
+      <td>Muy alta</td>
+      <td>10 casos (1.8%) fuera de [-0.0602, 0.155] por regla IQR.</td>
+      <td>mayor en maligno; |d|=2.55; asimetría marcada.</td>
+    </tr>
+    <tr>
+      <td>mean symmetry</td>
+      <td>numérica continua</td>
+      <td>Media de grado de simetría de la estructura celular.</td>
+      <td>0.106 a 0.304</td>
+      <td>índice adimensional</td>
+      <td>Media</td>
+      <td>15 casos (2.6%) fuera de [0.111, 0.246] por regla IQR.</td>
+      <td>mayor en maligno; |d|=0.72; asimetría moderada.</td>
+    </tr>
+    <tr>
+      <td>mean fractal dimension</td>
+      <td>numérica continua</td>
+      <td>Media de aproximación de complejidad del contorno celular.</td>
+      <td>0.04996 a 0.09744</td>
+      <td>índice adimensional</td>
+      <td>Exploratoria</td>
+      <td>15 casos (2.6%) fuera de [0.0451, 0.0787] por regla IQR.</td>
+      <td>mayor en benigno; |d|=0.03; asimetría marcada.</td>
+    </tr>
+    <tr>
+      <td>radius error</td>
+      <td>numérica continua</td>
+      <td>Error estándar de distancia media desde el centro hasta puntos del perímetro celular.</td>
+      <td>0.1115 a 2.873</td>
+      <td>unidades de imagen</td>
+      <td>Alta</td>
+      <td>38 casos (6.7%) fuera de [-0.137, 0.849] por regla IQR.</td>
+      <td>mayor en maligno; |d|=1.42; asimetría marcada.</td>
+    </tr>
+    <tr>
+      <td>texture error</td>
+      <td>numérica continua</td>
+      <td>Error estándar de variabilidad de la intensidad de gris en la imagen.</td>
+      <td>0.3602 a 4.885</td>
+      <td>desviación estándar de niveles de gris</td>
+      <td>Exploratoria</td>
+      <td>20 casos (3.5%) fuera de [-0.126, 2.43] por regla IQR.</td>
+      <td>mayor en benigno; |d|=0.02; asimetría marcada.</td>
+    </tr>
+    <tr>
+      <td>perimeter error</td>
+      <td>numérica continua</td>
+      <td>Error estándar de longitud del contorno de la masa celular.</td>
+      <td>0.757 a 21.98</td>
+      <td>unidades de imagen</td>
+      <td>Alta</td>
+      <td>38 casos (6.7%) fuera de [-1.02, 5.98] por regla IQR.</td>
+      <td>mayor en maligno; |d|=1.38; asimetría marcada.</td>
+    </tr>
+    <tr>
+      <td>area error</td>
+      <td>numérica continua</td>
+      <td>Error estándar de superficie proyectada de la masa celular.</td>
+      <td>6.802 a 542.2</td>
+      <td>unidades cuadradas de imagen</td>
+      <td>Alta</td>
+      <td>65 casos (11.4%) fuera de [-23.2, 86.2] por regla IQR.</td>
+      <td>mayor en maligno; |d|=1.35; asimetría marcada.</td>
+    </tr>
+    <tr>
+      <td>smoothness error</td>
+      <td>numérica continua</td>
+      <td>Error estándar de variación local de longitudes de radio.</td>
+      <td>0.001713 a 0.03113</td>
+      <td>índice adimensional</td>
+      <td>Exploratoria</td>
+      <td>30 casos (5.3%) fuera de [0.000703, 0.0126] por regla IQR.</td>
+      <td>mayor en benigno; |d|=0.14; asimetría marcada.</td>
+    </tr>
+    <tr>
+      <td>compactness error</td>
+      <td>numérica continua</td>
+      <td>Error estándar de relación de compacidad calculada como perímetro al cuadrado sobre área menos uno.</td>
+      <td>0.002252 a 0.1354</td>
+      <td>índice adimensional</td>
+      <td>Exploratoria</td>
+      <td>28 casos (4.9%) fuera de [-0.016, 0.0615] por regla IQR.</td>
+      <td>mayor en maligno; |d|=0.63; asimetría marcada.</td>
+    </tr>
+    <tr>
+      <td>concavity error</td>
+      <td>numérica continua</td>
+      <td>Error estándar de severidad de porciones cóncavas del contorno.</td>
+      <td>0 a 0.396</td>
+      <td>índice adimensional</td>
+      <td>Exploratoria</td>
+      <td>22 casos (3.9%) fuera de [-0.0253, 0.0825] por regla IQR.</td>
+      <td>mayor en maligno; |d|=0.54; asimetría marcada.</td>
+    </tr>
+    <tr>
+      <td>concave points error</td>
+      <td>numérica continua</td>
+      <td>Error estándar de cantidad relativa de puntos cóncavos del contorno.</td>
+      <td>0 a 0.05279</td>
+      <td>índice adimensional</td>
+      <td>Media</td>
+      <td>19 casos (3.3%) fuera de [-0.00297, 0.0253] por regla IQR.</td>
+      <td>mayor en maligno; |d|=0.92; asimetría marcada.</td>
+    </tr>
+    <tr>
+      <td>symmetry error</td>
+      <td>numérica continua</td>
+      <td>Error estándar de grado de simetría de la estructura celular.</td>
+      <td>0.007882 a 0.07895</td>
+      <td>índice adimensional</td>
+      <td>Exploratoria</td>
+      <td>27 casos (4.7%) fuera de [0.00268, 0.036] por regla IQR.</td>
+      <td>mayor en benigno; |d|=0.01; asimetría marcada.</td>
+    </tr>
+    <tr>
+      <td>fractal dimension error</td>
+      <td>numérica continua</td>
+      <td>Error estándar de aproximación de complejidad del contorno celular.</td>
+      <td>0.0008948 a 0.02984</td>
+      <td>índice adimensional</td>
+      <td>Exploratoria</td>
+      <td>28 casos (4.9%) fuera de [-0.00122, 0.00802] por regla IQR.</td>
+      <td>mayor en maligno; |d|=0.16; asimetría marcada.</td>
+    </tr>
+    <tr>
+      <td>worst radius</td>
+      <td>numérica continua</td>
+      <td>Peor valor de distancia media desde el centro hasta puntos del perímetro celular.</td>
+      <td>7.93 a 36.04</td>
+      <td>unidades de imagen</td>
+      <td>Muy alta</td>
+      <td>17 casos (3.0%) fuera de [4.34, 27.5] por regla IQR.</td>
+      <td>mayor en maligno; |d|=2.54; asimetría marcada.</td>
+    </tr>
+    <tr>
+      <td>worst texture</td>
+      <td>numérica continua</td>
+      <td>Peor valor de variabilidad de la intensidad de gris en la imagen.</td>
+      <td>12.02 a 49.54</td>
+      <td>desviación estándar de niveles de gris</td>
+      <td>Media</td>
+      <td>5 casos (0.9%) fuera de [8.12, 42.7] por regla IQR.</td>
+      <td>mayor en maligno; |d|=1.06; distribución relativamente estable.</td>
+    </tr>
+    <tr>
+      <td>worst perimeter</td>
+      <td>numérica continua</td>
+      <td>Peor valor de longitud del contorno de la masa celular.</td>
+      <td>50.41 a 251.2</td>
+      <td>unidades de imagen</td>
+      <td>Muy alta</td>
+      <td>15 casos (2.6%) fuera de [22.2, 187] por regla IQR.</td>
+      <td>mayor en maligno; |d|=2.60; asimetría marcada.</td>
+    </tr>
+    <tr>
+      <td>worst area</td>
+      <td>numérica continua</td>
+      <td>Peor valor de superficie proyectada de la masa celular.</td>
+      <td>185.2 a 4254</td>
+      <td>unidades cuadradas de imagen</td>
+      <td>Muy alta</td>
+      <td>35 casos (6.2%) fuera de [-338, 1.94e+03] por regla IQR.</td>
+      <td>mayor en maligno; |d|=2.23; asimetría marcada.</td>
+    </tr>
+    <tr>
+      <td>worst smoothness</td>
+      <td>numérica continua</td>
+      <td>Peor valor de variación local de longitudes de radio.</td>
+      <td>0.07117 a 0.2226</td>
+      <td>índice adimensional</td>
+      <td>Media</td>
+      <td>7 casos (1.2%) fuera de [0.0725, 0.19] por regla IQR.</td>
+      <td>mayor en maligno; |d|=0.96; distribución relativamente estable.</td>
+    </tr>
+    <tr>
+      <td>worst compactness</td>
+      <td>numérica continua</td>
+      <td>Peor valor de relación de compacidad calculada como perímetro al cuadrado sobre área menos uno.</td>
+      <td>0.02729 a 1.058</td>
+      <td>índice adimensional</td>
+      <td>Alta</td>
+      <td>16 casos (2.8%) fuera de [-0.141, 0.627] por regla IQR.</td>
+      <td>mayor en maligno; |d|=1.51; asimetría marcada.</td>
+    </tr>
+    <tr>
+      <td>worst concavity</td>
+      <td>numérica continua</td>
+      <td>Peor valor de severidad de porciones cóncavas del contorno.</td>
+      <td>0 a 1.252</td>
+      <td>índice adimensional</td>
+      <td>Alta</td>
+      <td>12 casos (2.1%) fuera de [-0.288, 0.786] por regla IQR.</td>
+      <td>mayor en maligno; |d|=1.81; asimetría marcada.</td>
+    </tr>
+    <tr>
+      <td>worst concave points</td>
+      <td>numérica continua</td>
+      <td>Peor valor de cantidad relativa de puntos cóncavos del contorno.</td>
+      <td>0 a 0.291</td>
+      <td>índice adimensional</td>
+      <td>Muy alta</td>
+      <td>0 casos (0.0%) fuera de [-0.0798, 0.306] por regla IQR.</td>
+      <td>mayor en maligno; |d|=2.69; distribución relativamente estable.</td>
+    </tr>
+    <tr>
+      <td>worst symmetry</td>
+      <td>numérica continua</td>
+      <td>Peor valor de grado de simetría de la estructura celular.</td>
+      <td>0.1565 a 0.6638</td>
+      <td>índice adimensional</td>
+      <td>Media</td>
+      <td>23 casos (4.0%) fuera de [0.149, 0.419] por regla IQR.</td>
+      <td>mayor en maligno; |d|=0.95; asimetría marcada.</td>
+    </tr>
+    <tr>
+      <td>worst fractal dimension</td>
+      <td>numérica continua</td>
+      <td>Peor valor de aproximación de complejidad del contorno celular.</td>
+      <td>0.05504 a 0.2075</td>
+      <td>índice adimensional</td>
+      <td>Media</td>
+      <td>24 casos (4.2%) fuera de [0.0405, 0.123] por regla IQR.</td>
+      <td>mayor en maligno; |d|=0.71; asimetría marcada.</td>
+    </tr>
+  </tbody>
+</table></div>
+
+    <h3>Estadística descriptiva</h3>
+    <p>
+      La tabla siguiente concentra percentiles, dispersión, asimetría, atípicos IQR y señal univariada.
+      El mayor porcentaje de atípicos IQR observado es 11.4%, lo que recomienda revisión
+      técnica de extremos antes de cualquier eliminación.
+    </p>
+    <div class="table-wrap"><table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Variable</th>
+      <th>n</th>
+      <th>Media</th>
+      <th>Desv. estándar</th>
+      <th>Mínimo</th>
+      <th>P1</th>
+      <th>P25</th>
+      <th>Mediana</th>
+      <th>P75</th>
+      <th>P99</th>
+      <th>Máximo</th>
+      <th>Asimetría</th>
+      <th>|d|</th>
+      <th>Dirección</th>
+      <th>Atípicos IQR</th>
+      <th>Atípicos IQR (%)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>mean radius</td>
+      <td>569.0</td>
+      <td>14.1273</td>
+      <td>3.5240</td>
+      <td>6.9810</td>
+      <td>8.4584</td>
+      <td>11.7000</td>
+      <td>13.3700</td>
+      <td>15.7800</td>
+      <td>24.3716</td>
+      <td>28.1100</td>
+      <td>0.9424</td>
+      <td>2.2055</td>
+      <td>Mayor en maligno</td>
+      <td>14.0</td>
+      <td>2.4605</td>
+    </tr>
+    <tr>
+      <td>mean texture</td>
+      <td>569.0</td>
+      <td>19.2896</td>
+      <td>4.3010</td>
+      <td>9.7100</td>
+      <td>10.9304</td>
+      <td>16.1700</td>
+      <td>18.8400</td>
+      <td>21.8000</td>
+      <td>30.6520</td>
+      <td>39.2800</td>
+      <td>0.6504</td>
+      <td>0.9423</td>
+      <td>Mayor en maligno</td>
+      <td>7.0</td>
+      <td>1.2302</td>
+    </tr>
+    <tr>
+      <td>mean perimeter</td>
+      <td>569.0</td>
+      <td>91.9690</td>
+      <td>24.2990</td>
+      <td>43.7900</td>
+      <td>53.8276</td>
+      <td>75.1700</td>
+      <td>86.2400</td>
+      <td>104.1000</td>
+      <td>165.7240</td>
+      <td>188.5000</td>
+      <td>0.9907</td>
+      <td>2.2895</td>
+      <td>Mayor en maligno</td>
+      <td>13.0</td>
+      <td>2.2847</td>
+    </tr>
+    <tr>
+      <td>mean area</td>
+      <td>569.0</td>
+      <td>654.8891</td>
+      <td>351.9141</td>
+      <td>143.5000</td>
+      <td>215.6640</td>
+      <td>420.3000</td>
+      <td>551.1000</td>
+      <td>782.7000</td>
+      <td>1786.6000</td>
+      <td>2501.0000</td>
+      <td>1.6457</td>
+      <td>2.0757</td>
+      <td>Mayor en maligno</td>
+      <td>25.0</td>
+      <td>4.3937</td>
+    </tr>
+    <tr>
+      <td>mean smoothness</td>
+      <td>569.0</td>
+      <td>0.0964</td>
+      <td>0.0141</td>
+      <td>0.0526</td>
+      <td>0.0687</td>
+      <td>0.0864</td>
+      <td>0.0959</td>
+      <td>0.1053</td>
+      <td>0.1329</td>
+      <td>0.1634</td>
+      <td>0.4563</td>
+      <td>0.7930</td>
+      <td>Mayor en maligno</td>
+      <td>6.0</td>
+      <td>1.0545</td>
+    </tr>
+    <tr>
+      <td>mean compactness</td>
+      <td>569.0</td>
+      <td>0.1043</td>
+      <td>0.0528</td>
+      <td>0.0194</td>
+      <td>0.0334</td>
+      <td>0.0649</td>
+      <td>0.0926</td>
+      <td>0.1304</td>
+      <td>0.2772</td>
+      <td>0.3454</td>
+      <td>1.1901</td>
+      <td>1.5346</td>
+      <td>Mayor en maligno</td>
+      <td>16.0</td>
+      <td>2.8120</td>
+    </tr>
+    <tr>
+      <td>mean concavity</td>
+      <td>569.0</td>
+      <td>0.0888</td>
+      <td>0.0797</td>
+      <td>0.0000</td>
+      <td>0.0000</td>
+      <td>0.0296</td>
+      <td>0.0615</td>
+      <td>0.1307</td>
+      <td>0.3517</td>
+      <td>0.4268</td>
+      <td>1.4012</td>
+      <td>2.0033</td>
+      <td>Mayor en maligno</td>
+      <td>18.0</td>
+      <td>3.1634</td>
+    </tr>
+    <tr>
+      <td>mean concave points</td>
+      <td>569.0</td>
+      <td>0.0489</td>
+      <td>0.0388</td>
+      <td>0.0000</td>
+      <td>0.0000</td>
+      <td>0.0203</td>
+      <td>0.0335</td>
+      <td>0.0740</td>
+      <td>0.1642</td>
+      <td>0.2012</td>
+      <td>1.1712</td>
+      <td>2.5452</td>
+      <td>Mayor en maligno</td>
+      <td>10.0</td>
+      <td>1.7575</td>
+    </tr>
+    <tr>
+      <td>mean symmetry</td>
+      <td>569.0</td>
+      <td>0.1812</td>
+      <td>0.0274</td>
+      <td>0.1060</td>
+      <td>0.1295</td>
+      <td>0.1619</td>
+      <td>0.1792</td>
+      <td>0.1957</td>
+      <td>0.2596</td>
+      <td>0.3040</td>
+      <td>0.7256</td>
+      <td>0.7230</td>
+      <td>Mayor en maligno</td>
+      <td>15.0</td>
+      <td>2.6362</td>
+    </tr>
+    <tr>
+      <td>mean fractal dimension</td>
+      <td>569.0</td>
+      <td>0.0628</td>
+      <td>0.0071</td>
+      <td>0.0500</td>
+      <td>0.0515</td>
+      <td>0.0577</td>
+      <td>0.0615</td>
+      <td>0.0661</td>
+      <td>0.0854</td>
+      <td>0.0974</td>
+      <td>1.3045</td>
+      <td>0.0265</td>
+      <td>Mayor en benigno</td>
+      <td>15.0</td>
+      <td>2.6362</td>
+    </tr>
+    <tr>
+      <td>radius error</td>
+      <td>569.0</td>
+      <td>0.4052</td>
+      <td>0.2773</td>
+      <td>0.1115</td>
+      <td>0.1197</td>
+      <td>0.2324</td>
+      <td>0.3242</td>
+      <td>0.4789</td>
+      <td>1.2913</td>
+      <td>2.8730</td>
+      <td>3.0886</td>
+      <td>1.4217</td>
+      <td>Mayor en maligno</td>
+      <td>38.0</td>
+      <td>6.6784</td>
+    </tr>
+    <tr>
+      <td>texture error</td>
+      <td>569.0</td>
+      <td>1.2169</td>
+      <td>0.5516</td>
+      <td>0.3602</td>
+      <td>0.4105</td>
+      <td>0.8339</td>
+      <td>1.1080</td>
+      <td>1.4740</td>
+      <td>2.9154</td>
+      <td>4.8850</td>
+      <td>1.6464</td>
+      <td>0.0171</td>
+      <td>Mayor en benigno</td>
+      <td>20.0</td>
+      <td>3.5149</td>
+    </tr>
+    <tr>
+      <td>perimeter error</td>
+      <td>569.0</td>
+      <td>2.8661</td>
+      <td>2.0219</td>
+      <td>0.7570</td>
+      <td>0.9532</td>
+      <td>1.6060</td>
+      <td>2.2870</td>
+      <td>3.3570</td>
+      <td>9.6900</td>
+      <td>21.9800</td>
+      <td>3.4436</td>
+      <td>1.3816</td>
+      <td>Mayor en maligno</td>
+      <td>38.0</td>
+      <td>6.6784</td>
+    </tr>
+    <tr>
+      <td>area error</td>
+      <td>569.0</td>
+      <td>40.3371</td>
+      <td>45.4910</td>
+      <td>6.8020</td>
+      <td>8.5144</td>
+      <td>17.8500</td>
+      <td>24.5300</td>
+      <td>45.1900</td>
+      <td>177.6840</td>
+      <td>542.2000</td>
+      <td>5.4472</td>
+      <td>1.3534</td>
+      <td>Mayor en maligno</td>
+      <td>65.0</td>
+      <td>11.4236</td>
+    </tr>
+    <tr>
+      <td>smoothness error</td>
+      <td>569.0</td>
+      <td>0.0070</td>
+      <td>0.0030</td>
+      <td>0.0017</td>
+      <td>0.0031</td>
+      <td>0.0052</td>
+      <td>0.0064</td>
+      <td>0.0081</td>
+      <td>0.0173</td>
+      <td>0.0311</td>
+      <td>2.3145</td>
+      <td>0.1387</td>
+      <td>Mayor en benigno</td>
+      <td>30.0</td>
+      <td>5.2724</td>
+    </tr>
+    <tr>
+      <td>compactness error</td>
+      <td>569.0</td>
+      <td>0.0255</td>
+      <td>0.0179</td>
+      <td>0.0023</td>
+      <td>0.0047</td>
+      <td>0.0131</td>
+      <td>0.0204</td>
+      <td>0.0324</td>
+      <td>0.0899</td>
+      <td>0.1354</td>
+      <td>1.9022</td>
+      <td>0.6327</td>
+      <td>Mayor en maligno</td>
+      <td>28.0</td>
+      <td>4.9209</td>
+    </tr>
+    <tr>
+      <td>concavity error</td>
+      <td>569.0</td>
+      <td>0.0319</td>
+      <td>0.0302</td>
+      <td>0.0000</td>
+      <td>0.0000</td>
+      <td>0.0151</td>
+      <td>0.0259</td>
+      <td>0.0420</td>
+      <td>0.1223</td>
+      <td>0.3960</td>
+      <td>5.1105</td>
+      <td>0.5416</td>
+      <td>Mayor en maligno</td>
+      <td>22.0</td>
+      <td>3.8664</td>
+    </tr>
+    <tr>
+      <td>concave points error</td>
+      <td>569.0</td>
+      <td>0.0118</td>
+      <td>0.0062</td>
+      <td>0.0000</td>
+      <td>0.0000</td>
+      <td>0.0076</td>
+      <td>0.0109</td>
+      <td>0.0147</td>
+      <td>0.0312</td>
+      <td>0.0528</td>
+      <td>1.4447</td>
+      <td>0.9228</td>
+      <td>Mayor en maligno</td>
+      <td>19.0</td>
+      <td>3.3392</td>
+    </tr>
+    <tr>
+      <td>symmetry error</td>
+      <td>569.0</td>
+      <td>0.0205</td>
+      <td>0.0083</td>
+      <td>0.0079</td>
+      <td>0.0105</td>
+      <td>0.0152</td>
+      <td>0.0187</td>
+      <td>0.0235</td>
+      <td>0.0522</td>
+      <td>0.0790</td>
+      <td>2.1951</td>
+      <td>0.0135</td>
+      <td>Mayor en benigno</td>
+      <td>27.0</td>
+      <td>4.7452</td>
+    </tr>
+    <tr>
+      <td>fractal dimension error</td>
+      <td>569.0</td>
+      <td>0.0038</td>
+      <td>0.0026</td>
+      <td>0.0009</td>
+      <td>0.0011</td>
+      <td>0.0022</td>
+      <td>0.0032</td>
+      <td>0.0046</td>
+      <td>0.0126</td>
+      <td>0.0298</td>
+      <td>3.9240</td>
+      <td>0.1615</td>
+      <td>Mayor en maligno</td>
+      <td>28.0</td>
+      <td>4.9209</td>
+    </tr>
+    <tr>
+      <td>worst radius</td>
+      <td>569.0</td>
+      <td>16.2692</td>
+      <td>4.8332</td>
+      <td>7.9300</td>
+      <td>9.2076</td>
+      <td>13.0100</td>
+      <td>14.9700</td>
+      <td>18.7900</td>
+      <td>30.7628</td>
+      <td>36.0400</td>
+      <td>1.1031</td>
+      <td>2.5439</td>
+      <td>Mayor en maligno</td>
+      <td>17.0</td>
+      <td>2.9877</td>
+    </tr>
+    <tr>
+      <td>worst texture</td>
+      <td>569.0</td>
+      <td>25.6772</td>
+      <td>6.1463</td>
+      <td>12.0200</td>
+      <td>15.2008</td>
+      <td>21.0800</td>
+      <td>25.4100</td>
+      <td>29.7200</td>
+      <td>41.8024</td>
+      <td>49.5400</td>
+      <td>0.4983</td>
+      <td>1.0605</td>
+      <td>Mayor en maligno</td>
+      <td>5.0</td>
+      <td>0.8787</td>
+    </tr>
+    <tr>
+      <td>worst perimeter</td>
+      <td>569.0</td>
+      <td>107.2612</td>
+      <td>33.6025</td>
+      <td>50.4100</td>
+      <td>58.2704</td>
+      <td>84.1100</td>
+      <td>97.6600</td>
+      <td>125.4000</td>
+      <td>208.3040</td>
+      <td>251.2000</td>
+      <td>1.1282</td>
+      <td>2.5982</td>
+      <td>Mayor en maligno</td>
+      <td>15.0</td>
+      <td>2.6362</td>
+    </tr>
+    <tr>
+      <td>worst area</td>
+      <td>569.0</td>
+      <td>880.5831</td>
+      <td>569.3570</td>
+      <td>185.2000</td>
+      <td>256.1920</td>
+      <td>515.3000</td>
+      <td>686.5000</td>
+      <td>1084.0000</td>
+      <td>2918.1600</td>
+      <td>4254.0000</td>
+      <td>1.8594</td>
+      <td>2.2302</td>
+      <td>Mayor en maligno</td>
+      <td>35.0</td>
+      <td>6.1511</td>
+    </tr>
+    <tr>
+      <td>worst smoothness</td>
+      <td>569.0</td>
+      <td>0.1324</td>
+      <td>0.0228</td>
+      <td>0.0712</td>
+      <td>0.0879</td>
+      <td>0.1166</td>
+      <td>0.1313</td>
+      <td>0.1460</td>
+      <td>0.1889</td>
+      <td>0.2226</td>
+      <td>0.4154</td>
+      <td>0.9596</td>
+      <td>Mayor en maligno</td>
+      <td>7.0</td>
+      <td>1.2302</td>
+    </tr>
+    <tr>
+      <td>worst compactness</td>
+      <td>569.0</td>
+      <td>0.2543</td>
+      <td>0.1573</td>
+      <td>0.0273</td>
+      <td>0.0501</td>
+      <td>0.1472</td>
+      <td>0.2119</td>
+      <td>0.3391</td>
+      <td>0.7786</td>
+      <td>1.0580</td>
+      <td>1.4736</td>
+      <td>1.5126</td>
+      <td>Mayor en maligno</td>
+      <td>16.0</td>
+      <td>2.8120</td>
+    </tr>
+    <tr>
+      <td>worst concavity</td>
+      <td>569.0</td>
+      <td>0.2722</td>
+      <td>0.2086</td>
+      <td>0.0000</td>
+      <td>0.0000</td>
+      <td>0.1145</td>
+      <td>0.2267</td>
+      <td>0.3829</td>
+      <td>0.9024</td>
+      <td>1.2520</td>
+      <td>1.1502</td>
+      <td>1.8119</td>
+      <td>Mayor en maligno</td>
+      <td>12.0</td>
+      <td>2.1090</td>
+    </tr>
+    <tr>
+      <td>worst concave points</td>
+      <td>569.0</td>
+      <td>0.1146</td>
+      <td>0.0657</td>
+      <td>0.0000</td>
+      <td>0.0000</td>
+      <td>0.0649</td>
+      <td>0.0999</td>
+      <td>0.1614</td>
+      <td>0.2692</td>
+      <td>0.2910</td>
+      <td>0.4926</td>
+      <td>2.6926</td>
+      <td>Mayor en maligno</td>
+      <td>0.0</td>
+      <td>0.0000</td>
+    </tr>
+    <tr>
+      <td>worst symmetry</td>
+      <td>569.0</td>
+      <td>0.2901</td>
+      <td>0.0619</td>
+      <td>0.1565</td>
+      <td>0.1760</td>
+      <td>0.2504</td>
+      <td>0.2822</td>
+      <td>0.3179</td>
+      <td>0.4869</td>
+      <td>0.6638</td>
+      <td>1.4339</td>
+      <td>0.9453</td>
+      <td>Mayor en maligno</td>
+      <td>23.0</td>
+      <td>4.0422</td>
+    </tr>
+    <tr>
+      <td>worst fractal dimension</td>
+      <td>569.0</td>
+      <td>0.0839</td>
+      <td>0.0181</td>
+      <td>0.0550</td>
+      <td>0.0586</td>
+      <td>0.0715</td>
+      <td>0.0800</td>
+      <td>0.0921</td>
+      <td>0.1406</td>
+      <td>0.2075</td>
+      <td>1.6626</td>
+      <td>0.7068</td>
+      <td>Mayor en maligno</td>
+      <td>24.0</td>
+      <td>4.2179</td>
+    </tr>
+  </tbody>
+</table></div>
+  </section>
+
+  <section>
+    <h2>Fase 3. Requerimientos del sistema analítico</h2>
+    <p>
+      Los requerimientos se formulan para un sistema de análisis reproducible, no para un producto clínico
+      operativo. La prioridad se asigna según riesgo metodológico, trazabilidad y valor para decisiones
+      académicas posteriores.
+    </p>
+    
+    <figure>
+      <img src="../figures/10_architecture_pipeline.png" alt="Arquitectura reproducible de carpetas, procesamiento y entregables.">
+      <figcaption>Arquitectura reproducible de carpetas, procesamiento y entregables.</figcaption>
+    </figure>
+    
+    
+    <figure>
+      <img src="../figures/11_project_timeline.png" alt="Cronograma ejecutivo sugerido para las fases del proyecto.">
+      <figcaption>Cronograma ejecutivo sugerido para las fases del proyecto.</figcaption>
+    </figure>
+    
+    <h3>Requerimientos funcionales</h3>
+    <div class="table-wrap"><table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>ID</th>
+      <th>Requerimiento funcional</th>
+      <th>Categoría</th>
+      <th>Prioridad</th>
+      <th>Justificación</th>
+      <th>Impacto</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>RF-01</td>
+      <td>Cargar el dataset seleccionado desde una fuente local versionada.</td>
+      <td>Ingesta</td>
+      <td>Alta</td>
+      <td>Evita dependencias externas y garantiza reproducción en entornos académicos.</td>
+      <td>Permite reconstruir el análisis sin internet ni APIs.</td>
+    </tr>
+    <tr>
+      <td>RF-02</td>
+      <td>Validar estructura, número de variables, tipos y variable objetivo.</td>
+      <td>Calidad de datos</td>
+      <td>Alta</td>
+      <td>Previene análisis sobre columnas corruptas o incompatibles.</td>
+      <td>Reduce riesgo de conclusiones no trazables.</td>
+    </tr>
+    <tr>
+      <td>RF-03</td>
+      <td>Calcular métricas de completitud, duplicados y balance del objetivo.</td>
+      <td>Calidad de datos</td>
+      <td>Alta</td>
+      <td>La confiabilidad del diagnóstico depende de ausencia de sesgos de captura.</td>
+      <td>Define si se requiere imputación, depuración o estratificación.</td>
+    </tr>
+    <tr>
+      <td>RF-04</td>
+      <td>Generar comparación cuantitativa entre tres datasets candidatos.</td>
+      <td>Selección analítica</td>
+      <td>Alta</td>
+      <td>La selección debe sustentarse en criterios medibles y no en preferencia subjetiva.</td>
+      <td>Justifica el dataset ante evaluación académica.</td>
+    </tr>
+    <tr>
+      <td>RF-05</td>
+      <td>Construir diccionario exhaustivo de variables con rango, unidad e importancia.</td>
+      <td>Documentación</td>
+      <td>Alta</td>
+      <td>La interpretación clínica necesita semántica clara por variable.</td>
+      <td>Mejora auditabilidad y transferencia del proyecto.</td>
+    </tr>
+    <tr>
+      <td>RF-06</td>
+      <td>Calcular estadísticos descriptivos robustos por variable.</td>
+      <td>EDA</td>
+      <td>Alta</td>
+      <td>Percentiles, asimetría y atípicos revelan la estructura real de los datos.</td>
+      <td>Soporta decisiones de transformación y modelado futuro.</td>
+    </tr>
+    <tr>
+      <td>RF-07</td>
+      <td>Cuantificar separación entre clases mediante tamaño de efecto.</td>
+      <td>Análisis estadístico</td>
+      <td>Alta</td>
+      <td>El tamaño de efecto aporta evidencia interpretable sin entrenar modelos innecesarios.</td>
+      <td>Prioriza variables relevantes para diagnóstico.</td>
+    </tr>
+    <tr>
+      <td>RF-08</td>
+      <td>Identificar correlaciones altas entre variables predictoras.</td>
+      <td>Análisis estadístico</td>
+      <td>Media</td>
+      <td>La redundancia puede afectar interpretabilidad y estabilidad de modelos futuros.</td>
+      <td>Informa reducción dimensional o regularización posterior.</td>
+    </tr>
+    <tr>
+      <td>RF-09</td>
+      <td>Exportar tablas finales en formato reutilizable.</td>
+      <td>Entregables</td>
+      <td>Media</td>
+      <td>Las tablas deben poder revisarse, auditarse o integrarse en anexos.</td>
+      <td>Facilita evaluación y continuidad del trabajo.</td>
+    </tr>
+    <tr>
+      <td>RF-10</td>
+      <td>Compilar un reporte HTML editorial con figuras, tablas e interpretación.</td>
+      <td>Reporte</td>
+      <td>Alta</td>
+      <td>El entregable final debe comunicar evidencia, no solo producir archivos.</td>
+      <td>Aumenta claridad, profesionalismo y presentabilidad.</td>
+    </tr>
+  </tbody>
+</table></div>
+    <h3>Requerimientos no funcionales</h3>
+    <div class="table-wrap"><table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>ID</th>
+      <th>Requerimiento no funcional</th>
+      <th>Prioridad</th>
+      <th>Justificación</th>
+      <th>Impacto</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>RNF-01</td>
+      <td>Reproducibilidad</td>
+      <td>Alta</td>
+      <td>El flujo debe ejecutarse con un único script local y resultados deterministas.</td>
+      <td>Permite validar el trabajo en cualquier revisión académica.</td>
+    </tr>
+    <tr>
+      <td>RNF-02</td>
+      <td>Eficiencia computacional</td>
+      <td>Alta</td>
+      <td>Solo se cargan datasets livianos y se evita entrenamiento innecesario.</td>
+      <td>Minimiza tiempo, memoria y consumo de recursos.</td>
+    </tr>
+    <tr>
+      <td>RNF-03</td>
+      <td>Independencia de red</td>
+      <td>Alta</td>
+      <td>No se usan descargas, APIs, nube ni modelos externos.</td>
+      <td>El proyecto cumple restricciones y protege continuidad operativa.</td>
+    </tr>
+    <tr>
+      <td>RNF-04</td>
+      <td>Trazabilidad</td>
+      <td>Alta</td>
+      <td>Cada figura y tabla declara fuente e interpretación.</td>
+      <td>Facilita auditoría de evidencia y defensa metodológica.</td>
+    </tr>
+    <tr>
+      <td>RNF-05</td>
+      <td>Interpretabilidad</td>
+      <td>Alta</td>
+      <td>Las métricas se basan en estadística descriptiva y tamaño de efecto.</td>
+      <td>Evita cajas negras en fases tempranas del proyecto.</td>
+    </tr>
+    <tr>
+      <td>RNF-06</td>
+      <td>Mantenibilidad</td>
+      <td>Media</td>
+      <td>El código separa carga, métricas, visualización y reporte.</td>
+      <td>Permite extender el análisis sin rehacer la base.</td>
+    </tr>
+    <tr>
+      <td>RNF-07</td>
+      <td>Portabilidad</td>
+      <td>Media</td>
+      <td>Usa únicamente Python, Pandas, NumPy, Matplotlib y scikit-learn.</td>
+      <td>Reduce fricción de instalación y dependencia de librerías pesadas.</td>
+    </tr>
+    <tr>
+      <td>RNF-08</td>
+      <td>Calidad visual</td>
+      <td>Alta</td>
+      <td>La salida debe usar paleta sobria, espacio en blanco y jerarquía editorial.</td>
+      <td>Mejora comunicación de hallazgos a audiencias técnicas y ejecutivas.</td>
+    </tr>
+    <tr>
+      <td>RNF-09</td>
+      <td>Robustez</td>
+      <td>Media</td>
+      <td>Las validaciones deben fallar de forma explícita ante cambios de estructura.</td>
+      <td>Evita reportes silenciosamente inconsistentes.</td>
+    </tr>
+    <tr>
+      <td>RNF-10</td>
+      <td>Gobernanza ética</td>
+      <td>Alta</td>
+      <td>El análisis evita inferencias clínicas individualizadas y trata el dataset como material académico.</td>
+      <td>Reduce riesgo de uso indebido en decisiones médicas reales.</td>
+    </tr>
+  </tbody>
+</table></div>
+  </section>
+
+  <section>
+    <h2>Conclusiones sustentadas</h2>
+    <ul>
+      <li>
+        La selección del dataset es cuantitativamente defendible: Breast Cancer Wisconsin Diagnostic alcanza 97.7/100
+        y supera a los candidatos por balance entre escala, dimensionalidad, interpretabilidad e impacto.
+      </li>
+      <li>
+        La completitud del 100% evita imputación en esta fase; por tanto, las diferencias observadas entre clases
+        no están condicionadas por estrategias de reemplazo de datos faltantes.
+      </li>
+      <li>
+        La clase minoritaria representa 37.3% del total, suficiente para exploración,
+        aunque un modelado posterior debería controlar el desbalance con particiones estratificadas.
+      </li>
+      <li>
+        La presencia de 16 variables con |d| >= 1 indica separación estadística fuerte; no obstante,
+        la correlación máxima de 0.998 confirma que varias medidas contienen información redundante.
+      </li>
+      <li>
+        La fase de requerimientos debe priorizar reproducibilidad, trazabilidad, independencia de red y
+        comunicación visual, porque esos atributos son los que hacen defendible el proyecto en un contexto
+        de maestría.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Reproducción</h2>
+    <p>
+      Ejecutar desde la raíz del proyecto:
+      <code>&amp; "$env:USERPROFILE\anaconda3\python.exe" src\build_project.py</code>
+    </p>
+    <p class="source">
+      Fuente de datos: scikit-learn 1.5.1, datasets incluidos localmente; sin descargas, APIs ni nube.. El script no realiza llamadas de red, no descarga archivos y no utiliza
+      modelos externos de IA. Las salidas finales se guardan en <code>data/</code>, <code>tables/</code>,
+      <code>figures/</code> y <code>report/</code>.
+    </p>
+  </section>
+</body>
+</html>

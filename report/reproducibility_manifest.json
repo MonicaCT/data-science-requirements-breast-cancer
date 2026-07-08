@@ -1,0 +1,44 @@
+{
+  "analysis_date": "2026-07-07",
+  "selected_dataset": "Breast Cancer Wisconsin Diagnostic",
+  "rows": 569,
+  "features": 30,
+  "source": "scikit-learn 1.5.1, datasets incluidos localmente; sin descargas, APIs ni nube.",
+  "restrictions": {
+    "external_ai_models": false,
+    "api_calls": false,
+    "cloud_services": false,
+    "downloads": false
+  },
+  "outputs": {
+    "data": [
+      "data/breast_cancer_wisconsin_diagnostic.csv"
+    ],
+    "tables": [
+      "data_dictionary.csv",
+      "data_quality_summary.csv",
+      "dataset_comparison.csv",
+      "descriptive_statistics.csv",
+      "functional_requirements.csv",
+      "nonfunctional_requirements.csv",
+      "variable_effect_sizes.csv"
+    ],
+    "figures": [
+      "01_project_flow.png",
+      "02_dataset_comparison_matrix.png",
+      "03_dataset_radar.png",
+      "04_missingness_map.png",
+      "05_target_distribution.png",
+      "06_effect_size_lollipop.png",
+      "07_correlation_heatmap.png",
+      "08_distribution_panel.png",
+      "09_boxplot_panel.png",
+      "10_architecture_pipeline.png",
+      "11_project_timeline.png",
+      "12_executive_dashboard.png"
+    ],
+    "report": [
+      "report/final_report.html"
+    ]
+  }
+}

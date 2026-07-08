@@ -1,0 +1,31 @@
+﻿Variable,Media maligno,Media benigno,Diferencia estandarizada (d),|d|,Dirección
+worst concave points,0.1822,0.0744,2.6926,2.6926,Mayor en maligno
+worst perimeter,141.3703,87.0059,2.5982,2.5982,Mayor en maligno
+mean concave points,0.088,0.0257,2.5452,2.5452,Mayor en maligno
+worst radius,21.1348,13.3798,2.5439,2.5439,Mayor en maligno
+mean perimeter,115.3654,78.0754,2.2895,2.2895,Mayor en maligno
+worst area,1422.2863,558.8994,2.2302,2.2302,Mayor en maligno
+mean radius,17.4628,12.1465,2.2055,2.2055,Mayor en maligno
+mean area,978.3764,462.7902,2.0757,2.0757,Mayor en maligno
+mean concavity,0.1608,0.0461,2.0033,2.0033,Mayor en maligno
+worst concavity,0.4506,0.1662,1.8119,1.8119,Mayor en maligno
+mean compactness,0.1452,0.0801,1.5346,1.5346,Mayor en maligno
+worst compactness,0.3748,0.1827,1.5126,1.5126,Mayor en maligno
+radius error,0.6091,0.2841,1.4217,1.4217,Mayor en maligno
+perimeter error,4.3239,2.0003,1.3816,1.3816,Mayor en maligno
+area error,72.6724,21.1351,1.3534,1.3534,Mayor en maligno
+worst texture,29.3182,23.5151,1.0605,1.0605,Mayor en maligno
+worst smoothness,0.1448,0.125,0.9596,0.9596,Mayor en maligno
+worst symmetry,0.3235,0.2702,0.9453,0.9453,Mayor en maligno
+mean texture,21.6049,17.9148,0.9423,0.9423,Mayor en maligno
+concave points error,0.0151,0.0099,0.9228,0.9228,Mayor en maligno
+mean smoothness,0.1029,0.0925,0.793,0.793,Mayor en maligno
+mean symmetry,0.1929,0.1742,0.723,0.723,Mayor en maligno
+worst fractal dimension,0.0915,0.0794,0.7068,0.7068,Mayor en maligno
+compactness error,0.0323,0.0214,0.6327,0.6327,Mayor en maligno
+concavity error,0.0418,0.026,0.5416,0.5416,Mayor en maligno
+fractal dimension error,0.0041,0.0036,0.1615,0.1615,Mayor en maligno
+smoothness error,0.0068,0.0072,-0.1387,0.1387,Mayor en benigno
+mean fractal dimension,0.0627,0.0629,-0.0265,0.0265,Mayor en benigno
+texture error,1.2109,1.2204,-0.0171,0.0171,Mayor en benigno
+symmetry error,0.0205,0.0206,-0.0135,0.0135,Mayor en benigno

@@ -1,0 +1,4 @@
+﻿Dataset,Dominio,Tarea,Objetivo,Observaciones,Variables predictoras,Valores faltantes (%),Filas duplicadas,Balance / objetivo,Puntaje tamaño,Puntaje dimensionalidad,Puntaje completitud,Puntaje preparación analítica,Puntaje interpretabilidad,Puntaje impacto,Puntaje total ponderado
+Breast Cancer Wisconsin Diagnostic,Salud / diagnóstico oncológico,Clasificación binaria,diagnóstico de masa mamaria,569.0,30.0,0.0,0.0,clase 0: 212 / clase 1: 357,100.0,100.0,100.0,94.9033,90.0,100.0,97.7355
+Diabetes Progression,Salud / progresión metabólica,Regresión,progresión de enfermedad a un año,442.0,10.0,0.0,0.0,No aplica: objetivo continuo,88.1363,57.735,100.0,100.0,73.0,90.0,83.5311
+Wine Recognition,Química analítica / enología,Clasificación multiclase,cultivar de vino,178.0,13.0,0.0,0.0,clase 0: 59 / clase 1: 71 / clase 2: 48,55.9312,65.8281,100.0,96.1798,86.0,67.0,76.1754

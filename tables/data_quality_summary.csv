@@ -1,0 +1,11 @@
+﻿Indicador,Resultado,Interpretación técnica
+Observaciones,569,Tamaño suficiente para exploración estadística y especificación de requerimientos.
+Variables predictoras,30,"Cobertura morfológica amplia: medias, errores estándar y peores valores."
+Variable objetivo,diagnosis,Etiqueta clínica binaria para comparar patrones entre masas benignas y malignas.
+Valores faltantes,0 (0.00%),No se requiere imputación; se preserva trazabilidad.
+Filas duplicadas,0,No se detectan registros duplicados exactos en el conjunto final.
+Distribución objetivo,benign: 357; malignant: 212,"Existe desbalance moderado, no extremo."
+Proporción minoritaria,37.3%,La clase maligna conserva representación analítica suficiente.
+Variables con atípicos IQR,29 de 30,"Los atípicos deben revisarse como extremos biológicos plausibles, no eliminarse por defecto."
+Mayor correlación absoluta,mean radius vs mean perimeter: 0.998,Sugiere redundancia morfológica que debe controlarse en modelado posterior.
+Variables con |d| >= 1,16,"La separación univariada es fuerte en varias variables, en especial medidas de concavidad y tamaño."

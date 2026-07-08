@@ -1,0 +1,11 @@
+﻿ID,Requerimiento funcional,Categoría,Prioridad,Justificación,Impacto
+RF-01,Cargar el dataset seleccionado desde una fuente local versionada.,Ingesta,Alta,Evita dependencias externas y garantiza reproducción en entornos académicos.,Permite reconstruir el análisis sin internet ni APIs.
+RF-02,"Validar estructura, número de variables, tipos y variable objetivo.",Calidad de datos,Alta,Previene análisis sobre columnas corruptas o incompatibles.,Reduce riesgo de conclusiones no trazables.
+RF-03,"Calcular métricas de completitud, duplicados y balance del objetivo.",Calidad de datos,Alta,La confiabilidad del diagnóstico depende de ausencia de sesgos de captura.,"Define si se requiere imputación, depuración o estratificación."
+RF-04,Generar comparación cuantitativa entre tres datasets candidatos.,Selección analítica,Alta,La selección debe sustentarse en criterios medibles y no en preferencia subjetiva.,Justifica el dataset ante evaluación académica.
+RF-05,"Construir diccionario exhaustivo de variables con rango, unidad e importancia.",Documentación,Alta,La interpretación clínica necesita semántica clara por variable.,Mejora auditabilidad y transferencia del proyecto.
+RF-06,Calcular estadísticos descriptivos robustos por variable.,EDA,Alta,"Percentiles, asimetría y atípicos revelan la estructura real de los datos.",Soporta decisiones de transformación y modelado futuro.
+RF-07,Cuantificar separación entre clases mediante tamaño de efecto.,Análisis estadístico,Alta,El tamaño de efecto aporta evidencia interpretable sin entrenar modelos innecesarios.,Prioriza variables relevantes para diagnóstico.
+RF-08,Identificar correlaciones altas entre variables predictoras.,Análisis estadístico,Media,La redundancia puede afectar interpretabilidad y estabilidad de modelos futuros.,Informa reducción dimensional o regularización posterior.
+RF-09,Exportar tablas finales en formato reutilizable.,Entregables,Media,"Las tablas deben poder revisarse, auditarse o integrarse en anexos.",Facilita evaluación y continuidad del trabajo.
+RF-10,"Compilar un reporte HTML editorial con figuras, tablas e interpretación.",Reporte,Alta,"El entregable final debe comunicar evidencia, no solo producir archivos.","Aumenta claridad, profesionalismo y presentabilidad."
