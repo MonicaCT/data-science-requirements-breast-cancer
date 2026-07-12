@@ -1,130 +1,156 @@
-﻿# Data Science Requirements: Breast Cancer Diagnostic Dataset
+# Data Science Requirements: Breast Cancer Diagnostic Dataset
 
-Proyecto academico reproducible para una practica de maestria en Ciencia de Datos. El repositorio documenta la seleccion tecnica de un dataset, su caracterizacion estadistica y la definicion de requerimientos funcionales y no funcionales para un sistema analitico biomédico.
+Reproducible data science requirements project for dataset selection, exploratory characterization and analytical-system requirements using the Breast Cancer Wisconsin Diagnostic dataset.
 
-## Objetivo
+![Status](https://img.shields.io/badge/status-final%20report%20available-0B2F44)
+![Primary Lab](https://img.shields.io/badge/primary%20lab-Data%20Science%20Lab-2F5F8F)
+![Methods](https://img.shields.io/badge/methods-requirements%20%26%20EDA-6F8F7A)
+![Data](https://img.shields.io/badge/data-local%20scikit--learn-4B5563)
+![Reproducible](https://img.shields.io/badge/reproducible-local%20Python-111827)
 
-Desarrollar y publicar un proyecto profesional, reproducible y auditado que cubre las fases iniciales de un ciclo de Ciencia de Datos: busqueda y comparacion de datasets, seleccion cuantitativa, descripcion exhaustiva del dataset seleccionado, analisis exploratorio y especificacion de requerimientos.
+<p align="center">
+  <img src="report/final_report_preview.png" alt="Preview of the final academic report" width="100%">
+</p>
 
-## Descripcion de la practica
+<p align="center">
+  <a href="https://github.com/MonicaCT/data-science-requirements-breast-cancer"><img alt="Repository" src="https://img.shields.io/badge/Repository-GitHub-111827?style=for-the-badge"></a>
+  <a href="report/final_report.html"><img alt="Final Report" src="https://img.shields.io/badge/Final%20Report-open-0B2F44?style=for-the-badge"></a>
+  <a href="#methodology"><img alt="Methodology" src="https://img.shields.io/badge/Methodology-view-2F5F8F?style=for-the-badge"></a>
+  <a href="#reproducibility"><img alt="Reproduce" src="https://img.shields.io/badge/Reproduce-commands-374151?style=for-the-badge"></a>
+  <a href="data/breast_cancer_wisconsin_diagnostic.csv"><img alt="Data Sample" src="https://img.shields.io/badge/Data%20Sample-open-6F8F7A?style=for-the-badge"></a>
+  <a href="tables/data_quality_summary.csv"><img alt="Validation Report" src="https://img.shields.io/badge/Validation%20Report-open-4B5563?style=for-the-badge"></a>
+</p>
 
-La practica evalua tres datasets locales incluidos en scikit-learn y selecciona el mas adecuado mediante criterios cuantitativos. El trabajo se enfoca en calidad de datos, interpretabilidad, completitud, estructura estadistica, valor academico y trazabilidad metodologica.
+## Project Objective
 
-No se entrena un modelo predictivo porque el alcance solicitado corresponde a las fases 1 a 3: seleccion, contextualizacion, analisis descriptivo y requerimientos. Esto reduce consumo computacional y evita procesos innecesarios.
+This repository documents the early phases of a data science project: dataset search and comparison, quantitative selection, data-quality assessment, exploratory statistical analysis, and functional and non-functional requirements for a biomedical analytical system.
 
-## Dataset seleccionado
+No predictive model is trained in the current scope. The project is intentionally limited to selection, contextualization, descriptive analysis and requirements definition.
+
+## Selected Dataset
 
 **Breast Cancer Wisconsin Diagnostic**
 
-- Fuente: datasets incluidos localmente en scikit-learn.
-- Observaciones: 569.
-- Variables predictoras: 30.
-- Variable objetivo: diagnostico benigno o maligno.
-- Valores faltantes: 0%.
-- Puntaje ponderado de seleccion: 97.7355 sobre 100.
+- Source: datasets available locally through scikit-learn.
+- Observations: 569.
+- Predictive variables: 30.
+- Target variable: benign or malignant diagnosis.
+- Missing values: 0%.
+- Duplicate rows: 0.
+- Weighted selection score: 97.7355 out of 100.
 
-El dataset fue seleccionado por su combinacion de impacto, interpretabilidad, completitud, tamano muestral y riqueza dimensional. La evidencia estadistica muestra separacion relevante entre clases en variables morfologicas como `worst concave points`, `worst perimeter`, `mean concave points` y `worst radius`.
+The dataset was selected for impact, interpretability, completeness, sample size and dimensional richness. The existing statistical outputs identify strong class separation in morphological variables such as `worst concave points`, `worst perimeter`, `mean concave points` and `worst radius`.
 
-## Metodologia
+## Portfolio Classification
 
-1. Busqueda local de tres datasets candidatos disponibles en scikit-learn.
-2. Comparacion tecnica con criterios normalizados: tamano, dimensionalidad, completitud, preparacion analitica, interpretabilidad e impacto.
-3. Seleccion del dataset con mayor puntaje ponderado.
-4. Construccion de diccionario exhaustivo de variables.
-5. Analisis de calidad de datos: faltantes, duplicados, balance de clases y atipicos por regla IQR.
-6. Analisis estadistico exploratorio: descriptivos, correlaciones y tamano de efecto entre clases.
-7. Formulacion de requerimientos funcionales y no funcionales.
-8. Generacion de tablas, figuras editoriales y reporte HTML reproducible.
+Primary Lab:
 
-## Estructura del repositorio
+- **Data Science Lab** - dataset selection, exploratory data analysis, analytical requirements and reproducible Python workflow.
+
+Secondary Labs:
+
+- **Research Methods Lab** - documented methodology, data-quality audit, effect sizes, reproducibility manifest and traceable evidence.
+- **Open Science Lab** - public repository, local reproducibility, transparent tables and final report artifacts.
+
+## Main Outputs
+
+| Project flow | Dataset comparison |
+|---|---|
+| ![Project flow](figures/01_project_flow.png) | ![Dataset comparison matrix](figures/02_dataset_comparison_matrix.png) |
+
+| Missingness map | Target distribution |
+|---|---|
+| ![Missingness map](figures/04_missingness_map.png) | ![Target distribution](figures/05_target_distribution.png) |
+
+| Effect sizes | Correlation heatmap |
+|---|---|
+| ![Effect size lollipop chart](figures/06_effect_size_lollipop.png) | ![Correlation heatmap](figures/07_correlation_heatmap.png) |
+
+## Methodology
+
+The project follows a constrained, reproducible academic workflow:
+
+1. Search three candidate datasets available locally in scikit-learn.
+2. Compare candidates using normalized criteria: sample size, dimensionality, completeness, analytical readiness, interpretability and impact.
+3. Select the highest-scoring dataset.
+4. Build a complete variable dictionary.
+5. Audit data quality: missingness, duplicates, class balance and IQR outliers.
+6. Produce exploratory statistics, correlations and class effect sizes.
+7. Define functional and non-functional requirements.
+8. Generate final tables, figures and an editorial HTML/PDF report.
+
+The workflow does not use external AI models, APIs, cloud services or dataset downloads.
+
+## Requirements Deliverables
+
+- [Functional requirements](tables/functional_requirements.csv)
+- [Non-functional requirements](tables/nonfunctional_requirements.csv)
+- [Data dictionary](tables/data_dictionary.csv)
+- [Dataset comparison](tables/dataset_comparison.csv)
+- [Data quality summary](tables/data_quality_summary.csv)
+- [Variable effect sizes](tables/variable_effect_sizes.csv)
+
+## Final Report
+
+- [Final HTML report](report/final_report.html)
+- [Final PDF report](report/final_report.pdf)
+- [Reproducibility manifest](report/reproducibility_manifest.json)
+
+The PDF includes professional cover, table of contents, figure index, table index, numbered pages, headers, footers, numbered figures and tables, cross-references, conclusions, bibliography and appendices. It was composed from existing final artifacts without recalculating statistics or regenerating analytical charts.
+
+## Repository Structure
 
 ```text
-data-science-requirements-breast-cancer/
-├── data/
-├── figures/
-├── report/
-├── src/
-├── tables/
-├── README.md
-├── requirements.txt
-└── .gitignore
+data/      selected local dataset sample
+figures/   final visual outputs
+report/    final HTML/PDF report and reproducibility manifest
+src/       reproducible project and report builders
+tables/    generated data-quality, dictionary and requirements tables
 ```
 
-## Principales resultados
+## Reproducibility
 
-- El dataset **Breast Cancer Wisconsin Diagnostic** obtuvo el mayor puntaje de seleccion frente a Wine Recognition y Diabetes Progression.
-- La completitud del dataset es 100%, por lo que no se requiere imputacion en esta fase.
-- La clase maligna representa una proporcion suficiente para analisis exploratorio, aunque un modelado futuro deberia usar particiones estratificadas.
-- Se identificaron multiples variables con tamano de efecto alto entre diagnosticos.
-- El heatmap de correlaciones evidencia redundancia entre variables geometricas, un aspecto clave para fases posteriores de seleccion de variables o regularizacion.
-- Se definieron 10 requerimientos funcionales y 10 no funcionales con prioridad, categoria, justificacion e impacto.
-
-## Informe PDF academico
-
-[Descargar informe PDF](report/final_report.pdf)
-
-![Vista previa del informe PDF](report/final_report_preview.png)
-
-El PDF incluye portada profesional, tabla de contenidos, indice de figuras, indice de tablas, numeracion de paginas, encabezado y pie de pagina, figuras y tablas numeradas, referencias cruzadas, conclusiones, bibliografia y anexos. Fue compuesto desde los artefactos finales existentes, sin recalcular estadisticas y sin regenerar graficos analiticos.
-
-Para regenerar solo el PDF desde los resultados ya existentes:
-
-```bash
-python src/build_pdf_report.py
-```
-
-Nota: la generacion del PDF requiere una instalacion local de XeLaTeX/TinyTeX disponible en el sistema. No requiere internet ni descarga datasets.
-## Reporte HTML
-
-El informe final con estilo editorial esta disponible en:
-
-[report/final_report.html](report/final_report.html)
-
-> Nota: si se visualiza desde GitHub, algunas restricciones del navegador pueden afectar rutas locales. Para una lectura completa, descargar o clonar el repositorio y abrir el archivo HTML localmente.
-
-## Como reproducir el analisis
-
-Instalar dependencias permitidas:
+Install permitted dependencies:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-Ejecutar desde la raiz del repositorio:
+Run from the repository root:
 
 ```bash
 python src/build_project.py
 ```
 
-El script genera nuevamente los artefactos finales en:
+The script regenerates the final artifacts in `data/`, `tables/`, `figures/` and `report/`. This portfolio harmonization did not run the pipeline, rerun analysis or regenerate outputs.
 
-- `data/`
-- `tables/`
-- `figures/`
-- `report/`
+To regenerate only the PDF from existing final outputs:
 
-## Restricciones de reproducibilidad
+```bash
+python src/build_pdf_report.py
+```
 
-Este proyecto cumple las restricciones academicas definidas:
+PDF generation requires a local XeLaTeX/TinyTeX installation. It does not require internet or dataset downloads.
 
-- No usa modelos externos de IA.
-- No realiza llamadas a APIs durante el analisis.
-- No utiliza servicios en la nube durante el analisis.
-- No descarga datasets.
-- No regenera artefactos salvo que se ejecute explicitamente `src/build_project.py`.
-- Usa solamente Python, Pandas, NumPy, Matplotlib y scikit-learn.
+## Limitations
 
-## Archivos clave
+This is an academic and methodological project, not a clinical decision tool. Outputs must not be interpreted as medical advice, patient-level diagnosis or individual recommendation. Later modelling phases should use stratified splits, feature-redundancy controls and appropriate validation before any predictive interpretation.
 
-- `src/build_project.py`: script reproducible principal.
-- `data/breast_cancer_wisconsin_diagnostic.csv`: dataset final seleccionado.
-- `tables/dataset_comparison.csv`: comparacion cuantitativa de datasets.
-- `tables/data_dictionary.csv`: diccionario completo de variables.
-- `figures/`: visualizaciones editoriales finales.
-- `report/final_report.html`: reporte academico final.
-- `report/reproducibility_manifest.json`: manifiesto de reproducibilidad.
+## Citation
 
-## Licencia y uso academico
+Citation metadata are available in [CITATION.cff](CITATION.cff).
 
-Repositorio preparado para fines academicos y de demostracion metodologica. El analisis no debe interpretarse como herramienta clinica ni como recomendacion medica individual.
+## Author
 
+**Monica Cueto Tapia**<br>
+GitHub: [MonicaCT](https://github.com/MonicaCT)
+
+## Portfolio Navigation
+
+- [MonicaCT GitHub profile](https://github.com/MonicaCT)
+- [Economic Complexity and Structural Transformation in Latin America](https://github.com/MonicaCT/economic-complexity-structural-transformation-lac)
+- [Inclusive Credit Risk Analytics - Bolivia](https://github.com/MonicaCT/InclusiveCreditRiskAnalytics-Bolivia)
+- [Poverty, Informality and Social Protection in Latin America](https://github.com/MonicaCT/poverty-informality-social-protection-lac)
+- [Financial Development, Stability and Growth in Latin America](https://github.com/MonicaCT/latin-america-financial-development-lab)
+- [Structural Vulnerability in Latin America and the Caribbean](https://github.com/MonicaCT/structural-vulnerability-lac-research)
+- [Rural Bolivia Housing Analytics](https://github.com/MonicaCT/rural-bolivia-housing-analytics)

@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "If you use this repository, please cite it using these metadata."
+title: "Data Science Requirements: Breast Cancer Diagnostic Dataset"
+type: software
+authors:
+  - family-names: "Cueto Tapia"
+    given-names: "Monica"
+repository-code: "https://github.com/MonicaCT/data-science-requirements-breast-cancer"
+url: "https://github.com/MonicaCT/data-science-requirements-breast-cancer"
+abstract: "Reproducible data science requirements project for dataset selection, exploratory characterization and analytical-system requirements using the Breast Cancer Wisconsin Diagnostic dataset."
+keywords:
+  - data science
+  - requirements engineering
+  - exploratory data analysis
+  - breast cancer diagnostic dataset
+  - scikit-learn
+  - reproducible research
+  - open science
+  - research methods
