@@ -13,12 +13,13 @@ Reproducible data science requirements project for dataset selection, explorator
 </p>
 
 <p align="center">
+  <a href="https://monicact.github.io/data-science-requirements-breast-cancer/"><img alt="Website" src="https://img.shields.io/badge/Website-open-002147?style=for-the-badge"></a>
+  <a href="https://github.com/MonicaCT/data-science-requirements-breast-cancer/blob/main/report/final_report.html"><img alt="Final Report" src="https://img.shields.io/badge/Final%20Report-open-0B2F44?style=for-the-badge"></a>
+  <a href="https://monicact.github.io/data-science-requirements-breast-cancer/#figures"><img alt="Main Figures" src="https://img.shields.io/badge/Main%20Figures-view-C9A227?style=for-the-badge"></a>
+  <a href="https://monicact.github.io/data-science-requirements-breast-cancer/#tables"><img alt="Executive Tables" src="https://img.shields.io/badge/Executive%20Tables-open-1F7A8C?style=for-the-badge"></a>
+  <a href="https://monicact.github.io/data-science-requirements-breast-cancer/#methodology"><img alt="Methodology" src="https://img.shields.io/badge/Methodology-review-2F5F8F?style=for-the-badge"></a>
   <a href="https://github.com/MonicaCT/data-science-requirements-breast-cancer"><img alt="Repository" src="https://img.shields.io/badge/Repository-GitHub-111827?style=for-the-badge"></a>
-  <a href="report/final_report.html"><img alt="Final Report" src="https://img.shields.io/badge/Final%20Report-open-0B2F44?style=for-the-badge"></a>
-  <a href="#methodology"><img alt="Methodology" src="https://img.shields.io/badge/Methodology-view-2F5F8F?style=for-the-badge"></a>
-  <a href="#reproducibility"><img alt="Reproduce" src="https://img.shields.io/badge/Reproduce-commands-374151?style=for-the-badge"></a>
-  <a href="data/breast_cancer_wisconsin_diagnostic.csv"><img alt="Data Sample" src="https://img.shields.io/badge/Data%20Sample-open-6F8F7A?style=for-the-badge"></a>
-  <a href="tables/data_quality_summary.csv"><img alt="Validation Report" src="https://img.shields.io/badge/Validation%20Report-open-4B5563?style=for-the-badge"></a>
+  <a href="https://monicact.github.io/"><img alt="Back to Portfolio" src="https://img.shields.io/badge/Back%20to%20Portfolio-return-B23A48?style=for-the-badge"></a>
 </p>
 
 ## Project Objective

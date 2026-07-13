@@ -1,0 +1,44 @@
+﻿{
+  "project": "Data Science Requirements: Breast Cancer Diagnostic Dataset",
+  "repository": "https://github.com/MonicaCT/data-science-requirements-breast-cancer",
+  "website": "https://monicact.github.io/data-science-requirements-breast-cancer/",
+  "primary_lab": "Data Science Lab",
+  "secondary_labs": ["Research Methods Lab", "Open Science Lab"],
+  "selected_dataset": "Breast Cancer Wisconsin Diagnostic",
+  "scope": "dataset selection, data-quality assessment, exploratory analysis and requirements definition",
+  "model_training": "none in current scope",
+  "metrics": {
+    "observations": 569,
+    "predictive_variables": 30,
+    "missing_values_pct": 0,
+    "duplicate_rows": 0,
+    "benign_count": 357,
+    "malignant_count": 212,
+    "minority_class_pct": 37.3,
+    "weighted_selection_score": 97.7355,
+    "variables_with_abs_d_at_least_1": 16
+  },
+  "reused_figures": [
+    "figures/01_project_flow.png",
+    "figures/02_dataset_comparison_matrix.png",
+    "figures/04_missingness_map.png",
+    "figures/05_target_distribution.png",
+    "figures/06_effect_size_lollipop.png",
+    "figures/07_correlation_heatmap.png",
+    "figures/12_executive_dashboard.png",
+    "report/final_report_preview.png"
+  ],
+  "reused_tables": [
+    "tables/functional_requirements.csv",
+    "tables/nonfunctional_requirements.csv",
+    "tables/data_dictionary.csv",
+    "tables/dataset_comparison.csv",
+    "tables/data_quality_summary.csv",
+    "tables/variable_effect_sizes.csv"
+  ],
+  "reused_report": [
+    "report/final_report.html",
+    "report/final_report.pdf",
+    "report/reproducibility_manifest.json"
+  ]
+}

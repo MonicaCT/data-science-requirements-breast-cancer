@@ -1,0 +1,303 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Data Science Requirements: Breast Cancer Diagnostic Dataset</title>
+  <meta name="description" content="Reproducible data science requirements project for dataset selection, exploratory characterization and analytical-system requirements using the Breast Cancer Wisconsin Diagnostic dataset.">
+  <link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header" aria-label="Site header">
+    <div class="nav-wrap">
+      <a class="brand" href="https://github.com/MonicaCT" aria-label="Monica Cueto Tapia GitHub profile">
+        <strong>Monica Cueto Tapia</strong>
+        <span>Development Data Portfolio</span>
+      </a>
+      <button class="nav-toggle" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="main-navigation">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="main-nav" id="main-navigation" aria-label="Main navigation">
+        <a href="#summary">Summary</a>
+        <a href="#snapshot">Dataset</a>
+        <a href="#findings">Findings</a>
+        <a href="#quality">Quality</a>
+        <a href="#figures">Figures</a>
+        <a href="#tables">Tables</a>
+        <a href="#methodology">Methods</a>
+        <a href="#report">Report</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="home" style="background: linear-gradient(90deg, rgba(247,245,240,0.97), rgba(247,245,240,0.84)), url('https://raw.githubusercontent.com/MonicaCT/data-science-requirements-breast-cancer/main/report/final_report_preview.png') center right / contain no-repeat;">
+      <div class="container hero-inner">
+        <div class="hero-copy">
+          <p class="eyebrow">Data Science Lab</p>
+          <h1>Data Science Requirements: Breast Cancer Diagnostic Dataset</h1>
+          <p class="subtitle">A reproducible requirements and exploratory analysis project for dataset selection, data quality assessment and analytical-system specification.</p>
+          <p class="lead">The project demonstrates dataset evaluation, variable documentation, data-quality review, exploratory analysis, requirements engineering and responsible scientific communication without training a predictive model.</p>
+          <div class="actions" aria-label="Project actions">
+            <a class="button primary" href="https://monicact.github.io/data-science-requirements-breast-cancer/">Website</a>
+            <a class="button secondary" href="https://github.com/MonicaCT/data-science-requirements-breast-cancer/blob/main/report/final_report.html">Final Report</a>
+            <a class="button secondary" href="#figures">Main Figures</a>
+            <a class="button secondary" href="#tables">Executive Tables</a>
+            <a class="button tertiary" href="#methodology">Methodology</a>
+            <a class="button tertiary" href="https://github.com/MonicaCT/data-science-requirements-breast-cancer">Repository</a>
+            <a class="button tertiary" href="https://monicact.github.io/">Back to Portfolio</a>
+          </div>
+        </div>
+        <div class="hero-panel" aria-label="Project signals">
+          <div class="signal"><strong>Dataset selected with evidence</strong><span>Three local scikit-learn datasets compared using normalized, weighted criteria.</span></div>
+          <div class="signal"><strong>No predictive model trained</strong><span>The scope is selection, characterization, data quality, EDA and requirements definition.</span></div>
+          <div class="signal"><strong>Reproducible reporting</strong><span>Final HTML/PDF report, tables, figures and manifest already exist in the repository.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section white" id="summary">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Executive summary</p>
+            <h2>What this project demonstrates</h2>
+          </div>
+          <p>This repository documents the early phases of a data science project: dataset search and comparison, quantitative selection, data-quality assessment, exploratory statistical analysis, and functional and non-functional requirements for a biomedical analytical system.</p>
+        </div>
+        <div class="grid three">
+          <article class="surface accent"><h3>Dataset selection</h3><p>Compares Breast Cancer Wisconsin Diagnostic, Diabetes Progression and Wine Recognition using measurable criteria rather than preference.</p></article>
+          <article class="surface blue"><h3>Data-quality assessment</h3><p>Reports completeness, duplicates, target balance, outlier flags, correlation structure and variables with strong effect sizes.</p></article>
+          <article class="surface teal"><h3>Requirements engineering</h3><p>Defines functional and non-functional requirements grounded in reproducibility, traceability, interpretability and maintainability.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="snapshot">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Dataset snapshot</p>
+            <h2>Selected dataset and core metrics</h2>
+          </div>
+          <p>All values are reused from existing repository tables and the final report. No statistics were recalculated for this website update.</p>
+        </div>
+        <div class="metric-grid">
+          <div class="metric"><strong>569</strong><span>Observations</span></div>
+          <div class="metric"><strong>30</strong><span>Predictive variables</span></div>
+          <div class="metric"><strong>0%</strong><span>Missing values</span></div>
+          <div class="metric"><strong>0</strong><span>Duplicate rows</span></div>
+          <div class="metric"><strong>357 / 212</strong><span>Benign / malignant class counts</span></div>
+          <div class="metric"><strong>37.3%</strong><span>Minority-class proportion</span></div>
+          <div class="metric"><strong>97.7355</strong><span>Weighted selection score</span></div>
+          <div class="metric"><strong>16</strong><span>Variables with |d| >= 1</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section white" id="findings">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Key findings</p>
+            <h2>Evidence already documented in the report</h2>
+          </div>
+          <p>The findings support requirements and exploratory understanding. They are not clinical advice and do not constitute a deployed diagnostic model.</p>
+        </div>
+        <div class="grid three">
+          <article class="surface accent"><h3>Highest-scoring dataset selected</h3><p>Breast Cancer Wisconsin Diagnostic scored 97.7355 out of 100, above Diabetes Progression and Wine Recognition.</p></article>
+          <article class="surface blue"><h3>Completeness is strong</h3><p>The selected dataset has 0.00% missing values and no exact duplicate rows in the final table.</p></article>
+          <article class="surface teal"><h3>Class balance is usable for EDA</h3><p>The target contains 357 benign and 212 malignant observations, indicating moderate rather than extreme imbalance.</p></article>
+          <article class="surface green"><h3>Feature redundancy is visible</h3><p>The largest absolute correlation reported is mean radius vs mean perimeter at 0.998.</p></article>
+          <article class="surface orange"><h3>Effect sizes prioritize variables</h3><p>Strong class separation appears in worst concave points, worst perimeter, mean concave points and worst radius.</p></article>
+          <article class="surface accent"><h3>Scope is intentionally bounded</h3><p>The project stops at requirements and exploratory characterization, leaving predictive modelling for later validated phases.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="quality">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Data quality</p>
+            <h2>Validation evidence for a requirements phase</h2>
+          </div>
+          <p>The project treats data quality as an input to system requirements: completeness, duplicates, target balance, outliers, correlation and feature separation are all documented.</p>
+        </div>
+        <div class="grid three">
+          <article class="surface accent"><h3>Completeness</h3><p>Missing values are reported as 0 (0.00%), so imputation is not required in the current exploratory scope.</p></article>
+          <article class="surface blue"><h3>Duplicates</h3><p>No exact duplicate rows were detected in the selected dataset.</p></article>
+          <article class="surface teal"><h3>Outliers</h3><p>Twenty-nine of thirty variables have IQR outlier flags and are treated as potentially plausible biological extremes.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section white" id="figures">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Main figures</p>
+            <h2>Existing visual outputs</h2>
+          </div>
+          <p>Eight existing figures are reused through published repository assets. No figures were regenerated.</p>
+        </div>
+        <div class="grid two">
+          <article class="project-card"><div class="project-media"><img src="https://raw.githubusercontent.com/MonicaCT/data-science-requirements-breast-cancer/main/figures/01_project_flow.png" alt="Project flow"></div><div class="project-body"><h3>Project flow</h3><p>Shows the workflow from dataset search through selection, EDA, requirements and reporting.</p></div></article>
+          <article class="project-card"><div class="project-media"><img src="https://raw.githubusercontent.com/MonicaCT/data-science-requirements-breast-cancer/main/figures/02_dataset_comparison_matrix.png" alt="Dataset comparison matrix"></div><div class="project-body"><h3>Dataset comparison</h3><p>Displays normalized selection criteria across three candidate datasets.</p></div></article>
+          <article class="project-card"><div class="project-media"><img src="https://raw.githubusercontent.com/MonicaCT/data-science-requirements-breast-cancer/main/figures/04_missingness_map.png" alt="Missingness map"></div><div class="project-body"><h3>Missingness</h3><p>Documents the completeness profile used in the data-quality assessment.</p></div></article>
+          <article class="project-card"><div class="project-media"><img src="https://raw.githubusercontent.com/MonicaCT/data-science-requirements-breast-cancer/main/figures/05_target_distribution.png" alt="Target distribution"></div><div class="project-body"><h3>Target distribution</h3><p>Summarizes benign and malignant class counts for the selected dataset.</p></div></article>
+          <article class="project-card"><div class="project-media"><img src="https://raw.githubusercontent.com/MonicaCT/data-science-requirements-breast-cancer/main/figures/06_effect_size_lollipop.png" alt="Effect size lollipop chart"></div><div class="project-body"><h3>Effect sizes</h3><p>Ranks variables by standardized class separation for exploratory prioritization.</p></div></article>
+          <article class="project-card"><div class="project-media"><img src="https://raw.githubusercontent.com/MonicaCT/data-science-requirements-breast-cancer/main/figures/07_correlation_heatmap.png" alt="Correlation heatmap"></div><div class="project-body"><h3>Correlation heatmap</h3><p>Highlights redundancy among morphological variables that should inform later modelling.</p></div></article>
+          <article class="project-card"><div class="project-media"><img src="https://raw.githubusercontent.com/MonicaCT/data-science-requirements-breast-cancer/main/figures/12_executive_dashboard.png" alt="Executive dashboard"></div><div class="project-body"><h3>Data-quality summary</h3><p>Executive dashboard view of dataset selection, quality and variable-priority evidence.</p></div></article>
+          <article class="project-card"><div class="project-media"><img src="https://raw.githubusercontent.com/MonicaCT/data-science-requirements-breast-cancer/main/report/final_report_preview.png" alt="Final report preview"></div><div class="project-body"><h3>Report preview</h3><p>Preview of the final academic report generated from existing project artifacts.</p></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="tables">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Executive tables</p>
+            <h2>Reusable analytical tables</h2>
+          </div>
+          <p>Existing CSV tables are linked from GitHub because they live outside `/docs`. The website does not regenerate or copy table outputs.</p>
+        </div>
+        <div class="grid three">
+          <article class="surface accent"><h3>Functional requirements</h3><p>Requirements covering ingestion, validation, dataset comparison, dictionary construction, EDA and reporting.</p><a class="button small secondary" href="https://github.com/MonicaCT/data-science-requirements-breast-cancer/blob/main/tables/functional_requirements.csv">Open table</a></article>
+          <article class="surface blue"><h3>Non-functional requirements</h3><p>Reproducibility, efficiency, network independence, traceability, interpretability, maintainability and portability.</p><a class="button small secondary" href="https://github.com/MonicaCT/data-science-requirements-breast-cancer/blob/main/tables/nonfunctional_requirements.csv">Open table</a></article>
+          <article class="surface teal"><h3>Data dictionary</h3><p>Variable-level metadata with type, description, range, units, importance, outlier notes and observations.</p><a class="button small secondary" href="https://github.com/MonicaCT/data-science-requirements-breast-cancer/blob/main/tables/data_dictionary.csv">Open table</a></article>
+          <article class="surface green"><h3>Dataset comparison</h3><p>Weighted comparison of candidate datasets across size, dimensionality, completeness, readiness, interpretability and impact.</p><a class="button small secondary" href="https://github.com/MonicaCT/data-science-requirements-breast-cancer/blob/main/tables/dataset_comparison.csv">Open table</a></article>
+          <article class="surface orange"><h3>Data quality</h3><p>Summary of observations, predictors, target, missingness, duplicates, class distribution, correlations and effect-size counts.</p><a class="button small secondary" href="https://github.com/MonicaCT/data-science-requirements-breast-cancer/blob/main/tables/data_quality_summary.csv">Open table</a></article>
+          <article class="surface accent"><h3>Effect sizes</h3><p>Standardized class differences used to prioritize variables for future modelling and documentation.</p><a class="button small secondary" href="https://github.com/MonicaCT/data-science-requirements-breast-cancer/blob/main/tables/variable_effect_sizes.csv">Open table</a></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section white" id="requirements">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Requirements deliverables</p>
+            <h2>What a reviewer can inspect</h2>
+          </div>
+          <p>The repository turns EDA evidence into system requirements while keeping the scope below predictive deployment.</p>
+        </div>
+        <div class="grid three">
+          <article class="surface accent"><h3>Functional requirements</h3><p>Specify the analytical system behavior: local loading, validation, comparison, dictionary, EDA, effect sizes and report generation.</p></article>
+          <article class="surface blue"><h3>Non-functional requirements</h3><p>Document quality constraints: reproducibility, efficiency, traceability, interpretability, maintainability and portability.</p></article>
+          <article class="surface teal"><h3>Evidence traceability</h3><p>Tables, figures, manifest and report provide an inspectable chain from source dataset to final deliverables.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="methodology">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Methodology</p>
+            <h2>Existing workflow summarized</h2>
+          </div>
+          <p>The methodology is reused from the README and final report. No scripts were executed for this update.</p>
+        </div>
+        <div class="timeline" aria-label="Methodological workflow">
+          <article><h3>1. Search local datasets</h3><p>Three candidate datasets available locally in scikit-learn are considered.</p></article>
+          <article><h3>2. Compare candidates</h3><p>Datasets are compared using normalized criteria for size, dimensionality, completeness, readiness, interpretability and impact.</p></article>
+          <article><h3>3. Select dataset</h3><p>Breast Cancer Wisconsin Diagnostic is selected as the highest-scoring dataset.</p></article>
+          <article><h3>4. Build variable dictionary</h3><p>Variables are documented with type, description, range, unit, importance and outlier notes.</p></article>
+          <article><h3>5. Assess data quality and EDA</h3><p>Missingness, duplicates, class balance, descriptive statistics, correlations and effect sizes are documented.</p></article>
+          <article><h3>6. Define requirements and report</h3><p>Functional and non-functional requirements, final figures, tables and HTML/PDF report are produced.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section white" id="report">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Final report</p>
+            <h2>Existing academic deliverable</h2>
+          </div>
+          <p>The final HTML/PDF report is reused as-is. It contains the executive summary, dataset comparison, quality review, EDA, requirements, figures, tables, conclusions, bibliography and appendices.</p>
+        </div>
+        <div class="grid two">
+          <article class="project-card">
+            <div class="project-media"><img src="https://raw.githubusercontent.com/MonicaCT/data-science-requirements-breast-cancer/main/report/final_report_preview.png" alt="Preview of final report"></div>
+            <div class="project-body">
+              <h3>Final academic report</h3>
+              <p>Professional final report generated from existing artifacts, with HTML and PDF versions stored in the repository.</p>
+              <div class="card-actions"><a class="button small primary" href="https://github.com/MonicaCT/data-science-requirements-breast-cancer/blob/main/report/final_report.html">Open HTML</a><a class="button small secondary" href="https://github.com/MonicaCT/data-science-requirements-breast-cancer/blob/main/report/final_report.pdf">Open PDF</a></div>
+            </div>
+          </article>
+          <article class="surface blue"><h3>Report status</h3><ul class="list-clean"><li>Final report artifacts already exist.</li><li>No report content was modified.</li><li>No figures or tables were regenerated.</li><li>No predictive model was trained.</li></ul></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="reproducibility">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Reproducibility</p>
+            <h2>Local, deterministic workflow</h2>
+          </div>
+          <p>The repository documents a local Python workflow using existing dependencies and no downloads, APIs, external AI models or cloud services.</p>
+        </div>
+        <div class="grid three">
+          <article class="surface accent"><h3>Python project</h3><p>The README documents `pip install -r requirements.txt` and `python src/build_project.py` for full regeneration when explicitly authorized.</p></article>
+          <article class="surface teal"><h3>Manifest</h3><p>The reproducibility manifest records selected dataset, rows, features, source restrictions and expected outputs.</p><a class="button small secondary" href="https://github.com/MonicaCT/data-science-requirements-breast-cancer/blob/main/report/reproducibility_manifest.json">Open manifest</a></article>
+          <article class="surface green"><h3>Current phase</h3><p>This website update did not run scripts, recalculate statistics, train models, or modify analytical outputs.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section white" id="limitations">
+      <div class="container narrow">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Limitations</p>
+            <h2>Responsible interpretation</h2>
+          </div>
+        </div>
+        <ul class="list-clean">
+          <li>This is an academic and methodological project, not a clinical decision tool.</li>
+          <li>Outputs must not be interpreted as medical advice, patient-level diagnosis or individual recommendation.</li>
+          <li>No predictive model is trained in the current scope.</li>
+          <li>Later modelling phases should use stratified splits, feature-redundancy controls and appropriate validation.</li>
+          <li>Dataset selection and requirements are based on available local datasets and documented project constraints.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section" id="citation">
+      <div class="container">
+        <div class="grid two">
+          <article class="surface accent">
+            <p class="eyebrow">Citation</p>
+            <h2>Citation metadata</h2>
+            <p>Citation metadata are available in CITATION.cff. No DOI was added in this phase.</p>
+            <a class="button small secondary" href="https://github.com/MonicaCT/data-science-requirements-breast-cancer/blob/main/CITATION.cff">Open CITATION.cff</a>
+          </article>
+          <article class="surface blue">
+            <p class="eyebrow">Back to portfolio</p>
+            <h2>Monica Cueto Tapia</h2>
+            <p>Portfolio navigation returns to the main profile and keeps this project connected to the broader research and data analyst portfolio.</p>
+            <div class="card-actions"><a class="button small primary" href="https://monicact.github.io/">Back to Portfolio</a><a class="button small secondary" href="https://github.com/MonicaCT">GitHub profile</a><a class="button small tertiary" href="https://github.com/MonicaCT/data-science-requirements-breast-cancer">Repository</a></div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner container">
+      <span>Data Science Requirements: Breast Cancer Diagnostic Dataset.</span>
+      <a href="https://github.com/MonicaCT/data-science-requirements-breast-cancer">View repository</a>
+    </div>
+  </footer>
+
+  <script src="assets/js/site.js"></script>
+</body>
+</html>
